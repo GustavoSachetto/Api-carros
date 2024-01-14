@@ -1,9 +1,9 @@
 {
-	"id": "1",
-	"valor": "R$66.900",
-	"cod_marca": "28",
+	"id": 1,
+	"valor": 66.900,
+	"cod_marca": 28,
 	"marca": "Chervrolet",
-	"cod_modelo": "3456",
+	"cod_modelo": 3456,
 	"modelo": "Prisma",
 	"versao": "1.4 MPFI LT 8V",
 	"imagens": [
@@ -12,26 +12,26 @@
 		"https://via.placeholder.com/600/d32776"
 	],
 	"ano": {
-		"lancamento": "2016",
-		"producao": "2022"
+		"lancamento": 2016,
+		"producao": 2022
 	},	
 	"combustivel": "Gasolina e álcool",
-	"portas": "4",
+	"portas": 4,
 	"transmissao": "Manual",
-	"motor": "1.4",
+	"motor": 1.4,
 	"carroceria": "Sedã",
 	"conforto": {
-		"piloto_automatico": "Não",
-		"climatizador": "Não",
-		"vidro_automatico": "Não"
+		"piloto_automatico": true,
+		"climatizador": false,
+		"vidro_automatico": false
 	},
 	"entretenimento": {
-		"am_fm": "Sim",
-		"entrada_auxiliar": "Não",
-		"bluetooth": "Não", 
-		"cd_player": "Não",
-		"dvd_player": "Não",
-		"leitor_mp3": "Não",
-		"endrada_usb": "Não"
+		"am_fm": true,
+		"entrada_auxiliar": false,
+		"bluetooth": false, 
+		"cd_player": false,
+		"dvd_player": false,
+		"leitor_mp3": false,
+		"endrada_usb": false
 	}
 }
