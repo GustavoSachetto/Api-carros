@@ -42,6 +42,8 @@ class Request
 
     /** 
      * Construtor da classe
+     * @param Router $router
+     * @return void
      */
     public function __construct($router)
     {

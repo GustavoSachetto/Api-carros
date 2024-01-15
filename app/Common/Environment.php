@@ -7,6 +7,7 @@ class Environment
     /**
      * Método resonsável por carregar as variáveis de ambiente do projeto
      * @param string $dir
+     * @return void
      */
     public static function load($dir) 
     {

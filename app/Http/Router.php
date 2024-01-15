@@ -222,7 +222,7 @@ class Router
 
             // VERIFICA CONTROLADOR DA ROTA
             if (!isset($route['controller'])) {
-                throw new Exception("Aj Url não pode ser processada", 500);
+                throw new Exception("A Url não pode ser processada", 500);
             }
 
             // ARGUMENTOS DA FUNÇÃO
@@ -257,7 +257,9 @@ class Router
                 ];
                 break;
             default:
-                return $message;
+                return [
+                    'error' => $message
+                ];
                 break;
         }
     }

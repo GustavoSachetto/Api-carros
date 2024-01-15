@@ -32,22 +32,19 @@ class Response
      * Método responsável por iniciar a classe e definir os valores
      * @param integer $httpCode
      * @param mixed $content
-     * @param string $contentType
+     * @return void
      */
     public function __construct($httpCode, $content)
     {
         $this->httpCode = $httpCode;
         $this->content  = $content;
+        $this->addHeader("Content-type", $this->contentType);
     }
-
-    /**
-     * Método responsável por alterar o content type do response
-     * @param string $contentType
-     */
 
     /**
      * Método responsável por adicionar um registro no cabeçalho de response
      * @param string $contentType
+     * @return void
      */
     public function addHeader($key, $value)
     {
@@ -56,6 +53,7 @@ class Response
 
     /**
      * Método responsável por enviar os headers para o navegador
+     * @return void
      */
     private function sendHeaders()
     {
@@ -70,6 +68,7 @@ class Response
 
     /**
      * Método responsável por enviar a resposta para o usuário
+     * @return void
      */
     public function sendReponse()
     {
@@ -80,6 +79,7 @@ class Response
         switch ($this->contentType) {
             case 'application/json':
                 echo json_encode($this->content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                break;
         }
     }
 }
