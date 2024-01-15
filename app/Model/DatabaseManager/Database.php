@@ -139,15 +139,23 @@ class Database
    * @param  string $fields
    * @return PDOStatement
    */
-  public function select($where = null, $order = null, $limit = null, $fields = '*')
+  public function select($where = null, $order = null, $limit = null, $fields = '*', $inner = null)
   {
     //DADOS DA QUERY
     $where = strlen($where) ? 'WHERE '.$where : '';
     $order = strlen($order) ? 'ORDER BY '.$order : '';
     $limit = strlen($limit) ? 'LIMIT '.$limit : '';
+    $innerJoin = '';
+
+    // UNINDO TABELAS CASO NECESSÁRIO
+    if (isset($inner)) {
+      foreach ($inner as $key => $value) {
+        $innerJoin .= strlen($key) ? 'INNER JOIN '.$key.' ON '.$value. ' ': '';
+      }
+    }
 
     //MONTA A QUERY
-    $query = 'SELECT '.$fields.' FROM '.$this->table.' '.$where.' '.$order.' '.$limit;
+    $query = 'SELECT '.$fields.' FROM '.$this->table.' '.$where.' '.$innerJoin.' '.$order.' '.$limit;
 
     //EXECUTA A QUERY
     return $this->execute($query);
