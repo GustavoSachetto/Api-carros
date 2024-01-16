@@ -9,3 +9,10 @@ $obRouter->get('/api/v1/cars', [
         return new Response(200, Service\Car::getCars($request));
     }
 ]);
+
+// ROTA DE CONSULTA DE VEÍCULOS
+$obRouter->get('/api/v1/cars/{id}', [
+    function($request, $id) {
+        return new Response(200, Service\Car::getCar($request, $id));
+    }
+]);

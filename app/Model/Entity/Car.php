@@ -166,10 +166,10 @@ class Car
      * Características de entretenimento do veículo
      * @var boolean
      */
-    public $endrada_usb = false;
+    public $entrada_usb = false;
 
     /**
-     * Tabelas a serem unidas na busca
+     * Variavel que armazena tabelas (padrões) a serem unidas na busca
      * @var array
      */
     private static $inner = [
@@ -180,6 +180,13 @@ class Car
     ];
 
     /**
+     * Variavel que armazena os campos (padrões) a serem buscados
+     * @var string
+     */
+    private static $fields = "veiculo.*, modelo.nome_modelo, modelo.id_marca,  marca.nome_marca, combustivel.nome_combustivel, transmissao.nome_transmissao";
+    
+
+    /**
      * Método rensponsavel por retornar os veículos
      * @param string $where
      * @param string $order
@@ -187,8 +194,18 @@ class Car
      * @param string $fields
      * @return PDOStatement
      */
-    public static function getCars($where = null, $order = null, $limit = null, $fields = '*')
+    public static function getCars($where = null, $order = null, $limit = null, $fields = null)
     {
-        return (new Database('veiculo'))->select($where, $order, $limit, $fields, self::$inner);
+        return (new Database('veiculo'))->select($where, $order, $limit, $fields ?? self::$fields, self::$inner);
+    }
+
+    /**
+     * Método reponsável por retornar o veículo pelo id
+     * @param integer $id
+     * @return Car
+     */
+    public static function getCarById($id)
+    {
+        return self::getCars('veiculo.id = '. $id)->fetchObject(self::class);
     }
 }
