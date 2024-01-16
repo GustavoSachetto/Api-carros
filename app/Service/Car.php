@@ -108,7 +108,7 @@ class Car extends Api
 
         // VERIFICA SE O CARRO EXISTE
         if (!$obCar instanceof EntityCar) {
-            throw new Exception("O usuário ".$id." não foi encontrado.", 404);
+            throw new Exception("O veiculo ".$id." não foi encontrado.", 404);
         }
 
         // RETORNA O CARRO

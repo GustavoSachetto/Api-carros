@@ -52,8 +52,8 @@ class Fuel extends Api
     public static function getFuels($request)
     {
         return [
-            'combustiveis'  => self  ::getFuelsItens($request, $obPagination),
-            'paginacao' => parent::getPagination($request, $obPagination)
+            'combustiveis' => self  ::getFuelsItens($request, $obPagination),
+            'paginacao'    => parent::getPagination($request, $obPagination)
         ];
     }
 
@@ -70,10 +70,10 @@ class Fuel extends Api
             throw new Exception("O id ".$id." não é válido.", 400);
         }    
         
-        // BUSCA CARRO 
+        // BUSCA COMBUSTÍVEL 
         $obFuel = EntityFuel::getFuelById($id);
 
-        // VERIFICA SE O CARRO EXISTE
+        // VERIFICA SE O COMBUSTÍVEL EXISTE
         if (!$obFuel instanceof EntityFuel) {
             throw new Exception("O combustível ".$id." não foi encontrado.", 404);
         }
