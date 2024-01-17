@@ -19,7 +19,7 @@ class Fuel
     public $nome_combustivel;
 
     /**
-     * Método rensponsavel os combustíveis
+     * Método rensponsavel por buscar os combustíveis
      * @param string $where
      * @param string $order
      * @param string $limit
@@ -32,9 +32,9 @@ class Fuel
     }
 
     /**
-     * Método reponsável por retornar o veículo pelo id
+     * Método reponsável por retornar o combustível pelo id
      * @param integer $id
-     * @return Car
+     * @return Fuel
      */
     public static function getFuelById($id)
     {
