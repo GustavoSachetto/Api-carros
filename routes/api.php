@@ -11,3 +11,6 @@ include __DIR__.'/api/v1/cars.php';
 
 // INCLUI ROTA DE COMBUSTÍVEIS DA API
 include __DIR__.'/api/v1/fuel.php';
+
+// INCLUI ROTA DE TRANSMISSÕES DA API
+include __DIR__.'/api/v1/transmissions.php';
