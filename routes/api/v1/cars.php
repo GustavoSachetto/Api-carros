@@ -16,3 +16,13 @@ $obRouter->get('/api/v1/cars/{id}', [
         return new Response(200, Service\Car::getCar($request, $id));
     }
 ]);
+
+// ROTA DE CADASTRO DE VEÍCULOS (POST)
+$obRouter->post('/api/v1/cars', [
+    'middlewares' => [
+        'user-basic-auth'
+    ],
+    function($request) {
+        return new Response(200, Service\Car::setNewCar($request));
+    }
+]);
