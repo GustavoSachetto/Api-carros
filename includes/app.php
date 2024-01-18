@@ -23,7 +23,8 @@ define('URL', getenv('URL'));
 
 // DEFINE O MAPEAMENTO DE MIDDLEWARES
 MiddlewareQueue::setMap([
-    'maintenance' => \App\Http\Middleware\Maintenance::class
+    'maintenance' => \App\Http\Middleware\Maintenance::class,
+    'user-basic-auth' => \App\Http\Middleware\UserBasicAuth::class
 ]);
 
 // DEFINE O MAPEAMENTO DE MIDDLEWARES PADRÕES
