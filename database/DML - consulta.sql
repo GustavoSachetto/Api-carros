@@ -1,5 +1,7 @@
 use api_carros;
 
+select * from usuario;
+
 select * from marca;
 
 select * from modelo;

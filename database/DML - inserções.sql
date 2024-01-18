@@ -1,5 +1,9 @@
 use api_carros;
 
+insert into usuario (nome, email, senha, acesso_admin) values 
+('Gustavo Sachetto da Cruz', 'admin@email.com', '$2y$10$mUsr/jxR6XXs8lgXeaukPu/zkkOTIsX2dUus43h9sDBCuDu/upY/e', true),
+('Usuário padrão', 'default@email.com', '$2y$10$R4iNbyE5R7WY7rB592SpRe8fpdoCpqNbU1sAR16o9gaA6GmFfdUri', false);
+
 insert into combustivel (nome_combustivel) values
 ('Gasolina'),
 ('Gasolina e Álcool'),

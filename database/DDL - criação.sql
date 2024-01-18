@@ -1,6 +1,14 @@
 create database api_carros;
 use api_carros;
 
+create table usuario(
+	id int auto_increment not null primary key,
+    nome varchar(100) not null,
+    email varchar(255) unique not null,
+	acesso_admin bit not null,
+    senha varchar(255) not null
+);
+
 create table marca(
 	id int auto_increment not null primary key,
     nome_marca char(25) not null unique
