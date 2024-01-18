@@ -14,3 +14,6 @@ include __DIR__.'/api/v1/fuel.php';
 
 // INCLUI ROTA DE TRANSMISSÕES DA API
 include __DIR__.'/api/v1/transmissions.php';
+
+// INCLUI ROTA DE USUÁRIOS DA API
+include __DIR__.'/api/v1/users.php';

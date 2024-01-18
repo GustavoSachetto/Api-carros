@@ -16,3 +16,13 @@ $obRouter->get('/api/v1/brands/{id}', [
         return new Response(200, Service\Brand::getBrand($request, $id));
     }
 ]);
+
+// ROTA DE CADASTRO DE MARCA (POST)
+$obRouter->post('/api/v1/brands', [
+    'middlewares' => [
+        'user-basic-auth'
+    ],
+    function($request) {
+        return new Response(200, Service\Brand::setNewBrand($request));
+    }
+]);
