@@ -25,6 +25,18 @@ class Car
     public $id_modelo;
 
     /**
+     * ID do tipo de combustível do veículo
+     * @var integer
+     */
+    public $id_combustivel;
+
+    /**
+     * ID do tipo de transmissão do veículo
+     * @var integer
+     */
+    public $id_transmissao;
+
+    /**
      * Valor do veículo
      * @var decimal
      */
@@ -184,7 +196,41 @@ class Car
      * @var string
      */
     private static $fields = "veiculo.*, modelo.nome_modelo, modelo.id_marca,  marca.nome_marca, combustivel.nome_combustivel, transmissao.nome_transmissao";
-    
+
+     /**
+     * Método responsavel pelo cadastro da instância atual no banco de dados
+     * @return boolean
+     */
+    public function cadastrar()
+    {
+        // INSERE O VEÍCULO NO BANCO
+        $this->id = (new Database('veiculo'))->insert([
+            "valor"             => $this->valor,
+	        "id_modelo"         => $this->id_modelo,
+            "id_combustivel"    => $this->id_combustivel,
+            "id_transmissao"    => $this->id_transmissao,
+	        "versao"            => $this->versao,
+	        "imagem_um"         => $this->imagem_um,
+	        "imagem_dois"       => $this->imagem_dois,
+	        "imagem_tres"       => $this->imagem_tres,
+	        "ano_producao"      => $this->ano_producao,
+            "ano_lancamento"    => $this->ano_lancamento,
+	        "portas"            => $this->portas,
+	        "motor"             => $this->motor,
+	        "carroceria"        => $this->carroceria,
+	        "piloto_automatico" => $this->piloto_automatico,
+	        "climatizador"      => $this->climatizador,
+	        "vidro_automatico"  => $this->vidro_automatico,
+	        "am_fm"             => $this->am_fm,
+	        "entrada_auxiliar"  => $this->entrada_auxiliar,
+	        "bluetooth"         => $this->bluetooth,
+	        "cd_player"         => $this->cd_player,
+	        "dvd_player"        => $this->dvd_player,
+	        "leitor_mp3"        => $this->leitor_mp3
+        ]);
+
+        return true;
+    }    
 
     /**
      * Método rensponsavel por retornar os veículos

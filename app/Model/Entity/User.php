@@ -66,6 +66,6 @@ class User
      */
     public static function getUserByEmail($email)
     {
-        return self::getUsers('email = '.$email)->fetchObject(self::class);
+        return self::getUsers('email = "'.$email.'"')->fetchObject(self::class);
     }
 }

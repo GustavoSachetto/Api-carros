@@ -19,6 +19,20 @@ class Transmission
     public $nome_transmissao;
 
     /**
+     * Método responsavel pelo cadastro da instância atual no banco de dados
+     * @return boolean
+     */
+    public function cadastrar()
+    {
+        // INSERE A TRANSMISSÃO NO BANCO
+        $this->id = (new Database('transmissao'))->insert([
+            'nome_transmissao' => $this->nome_transmissao
+        ]);
+
+        return true;
+    }
+
+    /**
      * Método rensponsavel por buscar as transmissões
      * @param string $where
      * @param string $order
@@ -39,5 +53,15 @@ class Transmission
     public static function getTransmissionById($id)
     {
         return self::getTransmissions('id = '. $id)->fetchObject(self::class);
+    }
+
+    /**
+     * Método responsável por buscar uma transmissão pelo nome
+     * @param string $name
+     * @return Transission
+     */
+    public static function getTransmissionByName($name)
+    {
+        return self::getTransmissions('nome_transmissao = "'.$name.'"')->fetchObject(self::class);
     }
 }

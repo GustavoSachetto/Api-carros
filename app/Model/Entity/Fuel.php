@@ -19,6 +19,20 @@ class Fuel
     public $nome_combustivel;
 
     /**
+     * Método responsavel pelo cadastro da instância atual no banco de dados
+     * @return boolean
+     */
+    public function cadastrar()
+    {
+        // INSERE O COMBUSTÍVEL NO BANCO
+        $this->id = (new Database('combustivel'))->insert([
+            'nome_combustivel' => $this->nome_combustivel
+        ]);
+
+        return true;
+    }
+
+    /**
      * Método rensponsavel por buscar os combustíveis
      * @param string $where
      * @param string $order
@@ -39,5 +53,15 @@ class Fuel
     public static function getFuelById($id)
     {
         return self::getFuels('id = '. $id)->fetchObject(self::class);
+    }
+
+    /**
+     * Método responsável por buscar um combustível pelo nome
+     * @param string $name
+     * @return Fuel
+     */
+    public static function getFuelByName($name)
+    {
+        return self::getFuels('nome_combustivel = "'.$name.'"')->fetchObject(self::class);
     }
 }

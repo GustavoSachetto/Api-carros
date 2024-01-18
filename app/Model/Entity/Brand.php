@@ -19,6 +19,20 @@ class Brand
     public $nome_marca;
 
     /**
+     * Método responsavel pelo cadastro da instância atual no banco de dados
+     * @return boolean
+     */
+    public function cadastrar()
+    {
+        // INSERE A MARCA NO BANCO
+        $this->id = (new Database('marca'))->insert([
+            'nome_marca' => $this->nome_marca
+        ]);
+
+        return true;
+    }
+
+    /**
      * Método rensponsavel por buscar as marcas
      * @param string $where
      * @param string $order
@@ -39,5 +53,15 @@ class Brand
     public static function getBrandById($id)
     {
         return self::getBrands('id = '. $id)->fetchObject(self::class);
+    }
+    
+    /**
+     * Método responsável por retornar a marca pelo nome
+     * @param string $name
+     * @return Brand
+     */
+    public static function getBrandByName($name)
+    {
+        return self::getBrands('nome_marca = "'.$name.'"')->fetchObject(self::class);
     }
 }
