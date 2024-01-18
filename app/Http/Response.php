@@ -39,6 +39,7 @@ class Response
         $this->httpCode = $httpCode;
         $this->content  = $content;
         $this->addHeader("Content-type", $this->contentType);
+        $this->addHeader("Access-Control-Allow-Origin", '*');
     }
 
     /**
@@ -78,7 +79,7 @@ class Response
         // IMPRIME O CONTEUDO
         switch ($this->contentType) {
             case 'application/json':
-                echo json_encode($this->content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                echo json_encode($this->content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
                 break;
         }
     }
