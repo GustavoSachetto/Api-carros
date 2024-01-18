@@ -4,33 +4,21 @@ namespace App\Service;
 
 use Exception;
 use App\Model\Entity\Fuel as EntityFuel;
-use App\Model\DatabaseManager\Pagination;
 
 class Fuel extends Api
 {
     /**
      * Método responsável por obter a renderização dos itens da api
      * @param Request $request
-     * @param Pagination $obPagination
      * @return string
      */
-    private static function getFuelsItens($request, &$obPagination)
+    private static function getFuelsItens($request)
     {
         // ITENS
         $itens = [];
 
-        // QUANTIDADE TOTAL DE REGISTROS
-        $quatidadetotal = EntityFuel::getFuels(null, null, null,'COUNT(*) as qtn')->fetchObject()->qtn;
-
-        // PÁGINA ATUAL
-        $queryParams = $request->getQueryParams();
-        $paginaAtual = $queryParams['page'] ?? 1;
-
-        // INSTANCIA DE PAGINAÇÃO
-        $obPagination = new Pagination($quatidadetotal, $paginaAtual, 10);
-
         // RESULTADOS DA PÁGINA
-        $results = EntityFuel::getFuels(null,'id ASC', $obPagination->getLimit());
+        $results = EntityFuel::getFuels(null,'id ASC');
 
         // RENDERIZA O ITEM
         while($obFuel = $results->fetchObject(EntityFuel::class)) {
@@ -51,10 +39,7 @@ class Fuel extends Api
      */
     public static function getFuels($request)
     {
-        return [
-            'combustiveis' => self  ::getFuelsItens($request, $obPagination),
-            'paginacao'    => parent::getPagination($request, $obPagination)
-        ];
+        return self::getFuelsItens($request);
     }
 
     /**
