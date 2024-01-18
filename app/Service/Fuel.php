@@ -69,4 +69,43 @@ class Fuel extends Api
             'nome_combustivel' => $obFuel->nome_combustivel
         ];
     }
+
+    /**
+     * Método responsável por cadastrar um novo combustivel
+     * @param Request $request
+     * @return array
+     */
+    public static function setNewFuel($request)
+    {
+        // POST VARS
+        $postVars = $request->getPostVars();
+        $nome = $postVars['nome_combustivel'] ?? null;
+
+        // VALIDA O NOME
+        if (!isset($nome)) {
+            throw new Exception("O campo 'nome_combustivel' é obrigatório.", 400);
+        } else if (empty($nome)) {
+            throw new Exception("O campo 'nome_combustivel' não pode estar vazio.", 400);
+        }
+
+        // BUSCA COMBUSTÍVEL
+        $obFuel = EntityFuel::getFuelByName($nome);
+
+        // VALIDA SE O COMBUSTÍVEL JÁ EXISTE
+        if ($obFuel instanceof EntityFuel) {
+            throw new Exception("Combustível ".$nome." já existente.", 400);
+        }
+
+        // CADASTRA UMA NOVA INSTÂNCIA NO BANCO
+        $obFuel = new EntityFuel;
+        $obFuel->nome_combustivel = $nome;
+        $obFuel->cadastrar();
+
+        // RETORNA OS DETALHES DO COMBUSTÍVEL CADASTRADO
+        return [
+            'id' => $obFuel->id,
+            'nome_combustivel' => $obFuel->nome_combustivel,
+            'success' => true
+        ];
+    }
 }

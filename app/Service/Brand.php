@@ -69,4 +69,43 @@ class Brand extends Api
             'nome_marca' => $obBrand->nome_marca
         ];
     }
+
+    /**
+     * Método responsável por cadastrar uma nova marca
+     * @param Request $request
+     * @return array
+     */
+    public static function setNewBrand($request)
+    {
+        // POST VARS
+        $postVars = $request->getPostVars();
+        $nome = $postVars['nome_marca'] ?? null;
+
+        // VALIDA O NOME
+        if (!isset($nome)) {
+            throw new Exception("O campo 'nome_marca' é obrigatório.", 400);
+        } else if (empty($nome)) {
+            throw new Exception("O campo 'nome_marca' não pode estar vazio.", 400);
+        }
+
+        // BUSCA MARCA
+        $obBrand = EntityBrand::getBrandByName($nome);
+
+        // VALIDA SE A MARCA JÁ EXISTE
+        if ($obBrand instanceof EntityBrand) {
+            throw new Exception("Marca ".$nome." já existente.", 400);
+        }
+
+        // CADASTRA UMA NOVA INSTÂNCIA NO BANCO
+        $obBrand = new EntityBrand;
+        $obBrand->nome_marca = $nome;
+        $obBrand->cadastrar();
+
+        // RETORNA OS DETALHES DA MARCA CADASTRADA
+        return [
+            'id' => $obBrand->id,
+            'nome_marca' => $obBrand->nome_marca,
+            'success' => true
+        ];
+    }
 }

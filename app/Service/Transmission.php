@@ -69,4 +69,43 @@ class Transmission extends Api
             'nome_transmissao' => $obTransmission->nome_transmissao
         ];
     }
+
+    /**
+     * Método responsável por cadastrar uma nova transmissão
+     * @param Request $request
+     * @return array
+     */
+    public static function setNewTransmission($request)
+    {
+        // POST VARS
+        $postVars = $request->getPostVars();
+        $nome = $postVars['nome_transmissao'] ?? null;
+
+        // VALIDA O NOME
+        if (!isset($nome)) {
+            throw new Exception("O campo 'nome_transmissao' é obrigatório.", 400);
+        } else if (empty($nome)) {
+            throw new Exception("O campo 'nome_transmissao' não pode estar vazio.", 400);
+        }
+
+        // BUSCA TRANSMISSÃO
+        $obTransmission = EntityTransmission::getTransmissionByName($nome);
+
+        // VALIDA SE A TRANSMISSÃO JÁ EXISTE
+        if ($obTransmission instanceof EntityTransmission) {
+            throw new Exception("Transmissão ".$nome." já existente.", 400);
+        }
+
+        // CADASTRA UMA NOVA INSTÂNCIA NO BANCO
+        $obTransmission = new EntityTransmission;
+        $obTransmission->nome_transmissao = $nome;
+        $obTransmission->cadastrar();
+
+        // RETORNA OS DETALHES DA TRANSMISSÃO CADASTRADA
+        return [
+            'id' => $obTransmission->id,
+            'nome_marca' => $obTransmission->nome_transmissao,
+            'success' => true
+        ];
+    }
 }
