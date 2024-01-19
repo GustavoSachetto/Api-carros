@@ -120,9 +120,7 @@ class Car extends Api
         }
 
         // RETORNA O CARRO
-        return [
-            self::setCarArray($obCar)
-        ];
+        return self::setCarArray($obCar);
     }
 
     /**
