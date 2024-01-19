@@ -1,9 +1,9 @@
 {
 	"id": 1,
 	"valor": "66900.00",
-	"cod_marca": 3,
+	"id_marca": 3,
 	"marca": "Chevrolet",
-	"cod_modelo": 1,
+	"id_modelo": 1,
 	"modelo": "Prisma",
 	"versao": "1.4 MPFI LT V8",
 	"imagens": [
