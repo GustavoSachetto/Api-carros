@@ -26,12 +26,12 @@ $obRouter->get('/api/v1/users/{id}', [
 ]);
 
 // ROTA DE CADASTRO DE USUÁRIOS
-$obRouter->post('/api/v1/users', [
+$obRouter->put('/api/v1/users/{id}', [
     'middlewares' => [
         'user-basic-auth',
         'user-admin-auth'
     ],
-    function($request) {
-        return new Response(200, Service\User::setNewUser($request));
+    function($request, $id) {
+        return new Response(200, Service\User::setEditUser($request, $id));
     }
 ]);

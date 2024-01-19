@@ -119,4 +119,58 @@ class User
             'success' => true
         ];
     }
+
+    /**
+     * Método responsável por cadastrar um novo usuário
+     * @param Request $request
+     * @return array
+     */
+    public static function setEditUser($request, $id)
+    {
+        // VALIDA SE O ID É NUMERICO
+        if (!is_numeric($id)) {
+            throw new Exception("O id ".$id." não é válido.", 400);
+        } else if ($id == 1) {
+            throw new Exception("Não pode alterar o usuário admin primário", 400);
+        }   
+
+        // POST VARS
+        $postVars = $request->getPostVars();
+
+        // VALIDANDO CAMPOS OBRIGATÓRIOS
+        if (!isset($postVars['email']) || !isset($postVars['senha'])) {
+            throw new Exception("Os campos 'email' e 'senha' são obrigatórios.", 400);
+        }
+
+        // BUSCA USUÁRIO
+        $obUser = EntityUser::getUserByEmail($postVars['email']);
+
+        // VALIDA SE O EMAIL É DUPLICADO
+        if ($obUser instanceof EntityUser && $id != $obUser->id) {
+            throw new Exception("Usuário '".$postVars['email']."' já existente. E-mail duplicado.", 400);
+        }
+
+        // BUSCA USUÁRIO 
+        $obUser = EntityUser::getUserById($id);
+
+        // VERIFICA SE O USUÁRIO EXISTE
+        if (!$obUser instanceof EntityUser) {
+            throw new Exception("O usuário ".$id." não foi encontrado.", 404);
+        }
+
+        // VALIDANDO ALTERAÇÕES
+        $obUser->nome         = $postVars['nome'] ?? $obUser->nome;
+        $obUser->email        = $postVars['email'] ?? $obUser->email;
+        $obUser->acesso_admin = $postVars['acesso_admin'] ?? $obUser->acesso_admin;
+        $obUser->senha        = password_hash($postVars['senha'], PASSWORD_DEFAULT) ?? $obUser->senha;
+
+        // ATUALIZANDO INSTÂNCIA
+        $obUser->atualizar();
+
+        // RETORNA OS DETALHES DO USUÁRIO CADASTRADO
+        return [
+            'id'      => $obUser->id,
+            'success' => true
+        ];
+    }
 }
