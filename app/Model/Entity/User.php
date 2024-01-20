@@ -69,6 +69,16 @@ class User
     }
 
     /**
+     * Método responsável por excluir a instância atual no banco de dados
+     * @return boolean
+     */
+    public function excluir()
+    {
+        // EXCLUI  O USUÁRIO NO BANCO
+        return (new Database('usuario'))->delete('id = '.$this->id);
+    }
+
+    /**
      * Método responsável por buscar os usuários no banco
      * @param string $where
      * @param string $order

@@ -26,6 +26,17 @@ $obRouter->get('/api/v1/users/{id}', [
 ]);
 
 // ROTA DE CADASTRO DE USUÁRIOS
+$obRouter->post('/api/v1/users', [
+    'middlewares' => [
+        'user-basic-auth',
+        'user-admin-auth'
+    ],
+    function($request) {
+        return new Response(200, Service\User::setNewUser($request));
+    }
+]);
+
+// ROTA DE ATUALIZAÇÃO DE USUÁRIOS
 $obRouter->put('/api/v1/users/{id}', [
     'middlewares' => [
         'user-basic-auth',
@@ -33,5 +44,16 @@ $obRouter->put('/api/v1/users/{id}', [
     ],
     function($request, $id) {
         return new Response(200, Service\User::setEditUser($request, $id));
+    }
+]);
+
+// ROTA DE EXCLUSÃO DE USUÁRIOS
+$obRouter->delete('/api/v1/users/{id}', [
+    'middlewares' => [
+        'user-basic-auth',
+        'user-admin-auth'
+    ],
+    function($request, $id) {
+        return new Response(200, Service\User::setDeleteUser($request, $id));
     }
 ]);

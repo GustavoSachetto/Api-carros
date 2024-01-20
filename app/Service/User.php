@@ -131,7 +131,7 @@ class User
         if (!is_numeric($id)) {
             throw new Exception("O id ".$id." não é válido.", 400);
         } else if ($id == 1) {
-            throw new Exception("Não pode alterar o usuário admin primário", 400);
+            throw new Exception("Erro não é possivel alterar o usuário admin (primário).", 400);
         }   
 
         // POST VARS
@@ -172,5 +172,37 @@ class User
             'id'      => $obUser->id,
             'success' => true
         ];
+    }
+
+    /**
+     * Método responsável por excluir um usuário
+     * @param Request $request
+     * @param integer $id
+     * @return array
+     */
+    public static function setDeleteUser($request, $id)
+    {
+         // VALIDA SE O ID É NUMERICO
+         if (!is_numeric($id)) {
+            throw new Exception("O id ".$id." não é válido.", 400);
+        } else if ($id == 1) {
+            throw new Exception("Erro não é possivel alterar o usuário admin (primário).", 400);
+        }   
+        
+        // BUSCA USUÁRIO 
+        $obUser = EntityUser::getUserById($id);
+
+        // VERIFICA SE O USUÁRIO EXISTE
+        if (!$obUser instanceof EntityUser) {
+            throw new Exception("O usuário ".$id." não foi encontrado.", 404);
+        }
+
+         // EXCLUIR INSTÂNCIA
+         $obUser->excluir();
+
+         // RETORNA OS DETALHES DA EXCLUSÃO
+         return [
+             'success' => true
+         ];
     }
 }
