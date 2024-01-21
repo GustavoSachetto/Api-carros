@@ -108,4 +108,83 @@ class Transmission extends Api
             'success' => true
         ];
     }
+
+    /**
+     * Método responsável por atualizar uma transmissão
+     * @param Request $request
+     * @return array
+     */
+    public static function setEditTransmission($request, $id)
+    {
+        // VALIDA SE O ID É NUMERICO
+        if (!is_numeric($id)) {
+            throw new Exception("O id ".$id." não é válido.", 400);
+        }
+
+        // POST VARS
+        $postVars = $request->getPostVars();
+
+        // VALIDANDO CAMPO OBRIGATÓRIO
+        if (!isset($postVars['nome_transmissao'])) {
+            throw new Exception("O campo 'nome_transmissao' é obrigatório.", 400);
+        }
+
+        // BUSCA TRANSMISSÃO PELO NOME
+        $obTransmissao = EntityTransmission::getTransmissionByName($postVars['nome_transmissao']);
+
+        // VALIDA TRANSMISSÃO DUPLICADA
+        if ($obTransmissao instanceof EntityTransmission) {
+            throw new Exception("Transmissão ".$postVars['nome_transmissao']." já existente. Transmissão duplicada.", 400);
+        }
+
+        // BUSCA TRANSMISSÃO
+        $obTransmissao = EntityTransmission::getTransmissionById($id);
+
+        // VERIFICA SE O TRANSMISSÃO EXISTE
+        if (!$obTransmissao instanceof EntityTransmission) {
+            throw new Exception("A transmissão ".$id." não foi encontrada.", 404);
+        }
+
+        // VALIDANDO ALTERAÇÕES
+        $obTransmissao->nome_transmissao = $postVars['nome_transmissao'] ?? $obTransmissao->nome_transmissao;
+
+        // ATUALIZANDO INSTÂNCIA
+        $obTransmissao->atualizar();
+
+        // RETORNA OS DETALHES DA TRANSMISSÃO ATUALIZADA
+        return [
+            'id'      => $obTransmissao->id,
+            'success' => true
+        ];
+    }
+
+    /**
+     * Método responsável por excluir uma transmissão
+     * @param Request $request
+     * @param integer $id
+     * @return array
+     */
+    public static function setDeleteTransmission($request, $id)
+    {
+        // VALIDA SE O ID É NUMERICO
+        if (!is_numeric($id)) {
+            throw new Exception("O id ".$id." não é válido.", 400);
+        }
+        
+        // BUSCA TRANSMISSÃO 
+        $obTransmission = EntityTransmission::getTransmissionById($id);
+
+        // VERIFICA SE A TRANSMISSÃO EXISTE
+        if (!$obTransmission instanceof EntityTransmission) {
+            throw new Exception("A transmissão ".$id." não foi encontrada.", 404);
+        }
+
+        // EXCLUIR INSTÂNCIA
+        $obTransmission->excluir();
+
+        // RETORNA OS DETALHES DA EXCLUSÃO
+        return [
+            'success' => true
+        ];
+    }
 }
