@@ -121,7 +121,7 @@ class User
     }
 
     /**
-     * Método responsável por cadastrar um novo usuário
+     * Método responsável por atualizar um usuário
      * @param Request $request
      * @return array
      */
@@ -167,7 +167,7 @@ class User
         // ATUALIZANDO INSTÂNCIA
         $obUser->atualizar();
 
-        // RETORNA OS DETALHES DO USUÁRIO CADASTRADO
+        // RETORNA OS DETALHES DO USUÁRIO ATUALIZADO
         return [
             'id'      => $obUser->id,
             'success' => true
@@ -182,7 +182,7 @@ class User
      */
     public static function setDeleteUser($request, $id)
     {
-         // VALIDA SE O ID É NUMERICO
+        // VALIDA SE O ID É NUMERICO
          if (!is_numeric($id)) {
             throw new Exception("O id ".$id." não é válido.", 400);
         } else if ($id == 1) {
@@ -197,12 +197,12 @@ class User
             throw new Exception("O usuário ".$id." não foi encontrado.", 404);
         }
 
-         // EXCLUIR INSTÂNCIA
-         $obUser->excluir();
+        // EXCLUIR INSTÂNCIA
+        $obUser->excluir();
 
-         // RETORNA OS DETALHES DA EXCLUSÃO
-         return [
-             'success' => true
-         ];
+        // RETORNA OS DETALHES DA EXCLUSÃO
+        return [
+            'success' => true
+        ];
     }
 }

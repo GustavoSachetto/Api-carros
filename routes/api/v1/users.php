@@ -25,7 +25,7 @@ $obRouter->get('/api/v1/users/{id}', [
     }
 ]);
 
-// ROTA DE CADASTRO DE USUÁRIOS
+// ROTA DE CADASTRO DE USUÁRIOS (POST)
 $obRouter->post('/api/v1/users', [
     'middlewares' => [
         'user-basic-auth',
@@ -36,7 +36,7 @@ $obRouter->post('/api/v1/users', [
     }
 ]);
 
-// ROTA DE ATUALIZAÇÃO DE USUÁRIOS
+// ROTA DE ATUALIZAÇÃO DE USUÁRIOS (PUT)
 $obRouter->put('/api/v1/users/{id}', [
     'middlewares' => [
         'user-basic-auth',
@@ -47,7 +47,7 @@ $obRouter->put('/api/v1/users/{id}', [
     }
 ]);
 
-// ROTA DE EXCLUSÃO DE USUÁRIOS
+// ROTA DE EXCLUSÃO DE USUÁRIOS (DELETE)
 $obRouter->delete('/api/v1/users/{id}', [
     'middlewares' => [
         'user-basic-auth',
