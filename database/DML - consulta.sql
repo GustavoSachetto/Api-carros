@@ -17,3 +17,6 @@ inner join modelo on veiculo.id_modelo = modelo.id
 inner join marca on modelo.id_marca = marca.id
 inner join combustivel on veiculo.id_combustivel = combustivel.id
 inner join transmissao on veiculo.id_transmissao = transmissao.id;
+
+select modelo.*, marca.nome_marca from modelo 
+inner join marca on modelo.id_marca = marca.id;
