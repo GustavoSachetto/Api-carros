@@ -7,7 +7,7 @@ use App\Model\Entity\User as EntityUser;
 
 class User
 {
-/**
+    /**
      * Método responsável por obter a renderização dos itens da api
      * @param Request $request
      * @return string
