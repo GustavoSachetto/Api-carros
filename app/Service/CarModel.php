@@ -5,7 +5,7 @@ namespace App\Service;
 use Exception;
 use App\Model\Entity\CarModel as EntityCarModel;
 
-class CarModel
+class CarModel extends Api
 {
     /**
      * Método responsável por obter a renderização dos itens da api
@@ -69,6 +69,47 @@ class CarModel
             'id'          => $obCarModel->id,
             'id_marca'    => $obCarModel->id_marca,
             'nome_modelo' => $obCarModel->nome_modelo
+        ];
+    }
+
+    /**
+     * Método responsável por cadastrar uma nova marca
+     * @param Request $request
+     * @return array
+     */
+    public static function setNewCarModel($request)
+    {
+        // POST VARS
+        $postVars = $request->getPostVars();
+        $id_marca = $postVars['id_marca'] ?? null;
+        $nome     = $postVars['nome_modelo'] ?? null;
+
+        // VALIDA O NOME DO MODELO E O ID DA MARCA
+        if (!isset($nome) || !isset($id_marca)) {
+            throw new Exception("Os campos 'nome_modelo' e 'id_marca' são obrigatórios.", 400);
+        } else if (empty($nome) || !isset($id_marca)) {
+            throw new Exception("Os campos 'nome_modelo' e 'id_marca' não podem estar vazios.", 400);
+        }
+
+        // BUSCA MODELO DE VEÍCULO
+        $obCarModel = EntityCarModel::getCarModelByNameAndId($nome, $id_marca);
+
+        // VALIDA SE O MODELO DE VEÍCULO JÁ EXISTE
+        if ($obCarModel instanceof EntityCarModel) {
+            throw new Exception("Modelo ".$nome." já existente na marca de id ".$id_marca.".", 400);
+        }
+
+        // CADASTRA UMA NOVA INSTÂNCIA NO BANCO
+        $obCarModel = new EntityCarModel;
+        $obCarModel->id_marca = $id_marca;
+        $obCarModel->nome_modelo = $nome;
+        $obCarModel->cadastrar();
+
+        // RETORNA OS DETALHES DO MODELO CADASTRADO
+        return [
+            'id'          => $obCarModel->id,
+            'nome_modelo' => $obCarModel->nome_modelo,
+            'success'     => true
         ];
     }
 }

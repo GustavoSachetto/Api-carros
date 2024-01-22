@@ -5,7 +5,7 @@ namespace App\Service;
 use Exception;
 use App\Model\Entity\User as EntityUser;
 
-class User
+class User extends Api
 {
     /**
      * Método responsável por obter a renderização dos itens da api

@@ -25,6 +25,21 @@ class CarModel
     public $nome_modelo;
 
     /**
+     * Método responsável por cadastrar a instância atual no bando de dados
+     * @return void
+     */
+    public function cadastrar()
+    {
+        // INSERE UM NOVO MODELO
+        $this->id = (new Database('modelo'))->insert([
+            'id_marca'    => $this->id_marca,
+            'nome_modelo' => $this->nome_modelo
+        ]);
+
+        return true;
+    }
+
+    /**
      * Método responsável por retornar os modelos do veíclo
      * @param string $where
      * @param string $order
@@ -45,5 +60,10 @@ class CarModel
     public static function getCarModelById($id)
     {
         return self::getCarModels('id = '.$id)->fetchObject(self::class);
+    }
+
+    public static function getCarModelByNameAndId($name, $id)
+    {
+        return self::getCarModels('id_marca = '.$id.' AND nome_modelo = "'.$name.'"')->fetchObject(self::class);
     }
 }
