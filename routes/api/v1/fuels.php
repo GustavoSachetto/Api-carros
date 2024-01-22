@@ -26,3 +26,10 @@ $obRouter->post('/api/v1/fuels', [
         return new Response(200, Service\Fuel::setNewFuel($request));
     }
 ]);
+
+// ROTA DE TESTE COMBUSTÍVEIS (OPTIONS)
+$obRouter->options('/api/v1/fuels', [
+    function($request) {
+        return new Response(200, Service\Fuel::getDetails($request));
+    }
+]);

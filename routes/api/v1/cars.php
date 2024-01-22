@@ -26,3 +26,10 @@ $obRouter->post('/api/v1/cars', [
         return new Response(200, Service\Car::setNewCar($request));
     }
 ]);
+
+// ROTA DE TESTE DE VEÍCULOS (OPTIONS)
+$obRouter->options('/api/v1/cars', [
+    function($request) {
+        return new Response(200, Service\Car::getDetails($request));
+    }
+]);
