@@ -123,6 +123,17 @@ class Router
     }
 
     /**
+     * Método responsável por definir uma rota de OPTIONS
+     * @param string $route
+     * @param array $params
+     * @return void
+     */
+    public function options($route, $params = [])
+    {
+        return $this->addRoute('OPTIONS', $route, $params);
+    }
+
+    /**
      * Método responsável por definir uma rota de POST
      * @param string $route
      * @param array @params
