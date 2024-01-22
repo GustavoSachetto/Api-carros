@@ -64,9 +64,6 @@ class Request
         // VERIFICA O MÉTODO DA REQUISIÇÃO
         if($this->httpMethod == 'GET') return false;
 
-        // POST PADRÃO
-        $this->postVars = $_POST ?? [];
-
         // POST JSON
         $inputRaw = file_get_contents('php://input');
         $this->postVars = (strlen($inputRaw) && empty($_POST)) ? json_decode($inputRaw, true) : $this->postVars;
