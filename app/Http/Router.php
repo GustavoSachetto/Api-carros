@@ -37,7 +37,7 @@ class Router
      * Content type padrão do response
      * @var string
      */
-    private $contentType = 'text/html';
+    private $contentType = 'application/json';
 
     /**
      * Método responsável por iniciar a classe
@@ -266,11 +266,6 @@ class Router
     {
         switch ($this->contentType) {
             case 'application/json':
-                return [
-                    'error' => $message
-                ];
-                break;
-            default:
                 return [
                     'error' => $message
                 ];
