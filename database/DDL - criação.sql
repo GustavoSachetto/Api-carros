@@ -64,5 +64,7 @@ create table veiculo(
     constraint FKid_combustivel foreign key (id_combustivel) references combustivel (id),
     
     id_transmissao int not null,
-    constraint FKid_transmissao foreign key (id_transmissao) references transmissao (id)
+    constraint FKid_transmissao foreign key (id_transmissao) references transmissao (id),
+    
+     constraint UNveiculo unique (versao, id_modelo, id_combustivel, id_transmissao)
 );
