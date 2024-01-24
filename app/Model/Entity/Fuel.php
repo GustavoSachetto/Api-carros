@@ -33,6 +33,18 @@ class Fuel
     }
 
     /**
+     * Método responsável por atualizar a instância atual no banco de dados
+     * @return boolean
+     */
+    public function atualizar()
+    {
+        // ATUALIZA O COMBUSTÍVEL NO BANCO
+        return (new Database('combustivel'))->update('id = '.$this->id, [
+            'nome_combustivel' => $this->nome_combustivel
+        ]);
+    }
+
+    /**
      * Método rensponsavel por buscar os combustíveis
      * @param string $where
      * @param string $order
