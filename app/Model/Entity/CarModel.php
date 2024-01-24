@@ -40,6 +40,19 @@ class CarModel
     }
 
     /**
+     * Método responsável por atualizar a instância atual no banco de dados
+     * @return boolean
+     */
+    public function atualizar()
+    {
+        // ATUALIZA O MODELO NO BANCO
+        return (new Database('modelo'))->update('id = '.$this->id, [
+            'id_marca'    => $this->id_marca,
+            'nome_modelo' => $this->nome_modelo
+        ]);
+    }
+
+    /**
      * Método responsável por retornar os modelos do veíclo
      * @param string $where
      * @param string $order
