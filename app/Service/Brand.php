@@ -108,4 +108,56 @@ class Brand extends Api
             'success' => true
         ];
     }
+
+    /**
+     * Método responsável por atualizar uma marca
+     * @param Request $request
+     * @return array
+     */
+    public static function setEditBrand($request, $id)
+    {
+        // VALIDA SE O ID É NUMERICO
+        if (!is_numeric($id)) {
+            throw new Exception("O id ".$id." não é válido.", 400);
+        }
+
+        // POST VARS
+        $postVars = $request->getPostVars();
+        $nome = $postVars['nome_marca'] ?? null;
+
+        // VALIDANDO CAMPO OBRIGATÓRIO
+        if (!isset($nome)) {
+            throw new Exception("O campo 'nome_marca' é obrigatório.", 400);
+        } else if (empty($nome)) {
+            throw new Exception("O campo 'nome_marca' não pode estar vazio.", 400);
+        }
+
+        // BUSCA MARCA
+        $obBrand = EntityBrand::getBrandByName($nome);
+
+        // VALIDA SE A MARCA JÁ EXISTE
+        if ($obBrand instanceof EntityBrand) {
+            throw new Exception("Marca ".$nome." já existente.", 400);
+        }
+
+        // BUSCA MARCA 
+        $obBrand = EntityBrand::getBrandById($id);
+
+        // VERIFICA SE A MARCA EXISTE
+        if (!$obBrand instanceof EntityBrand) {
+            throw new Exception("A marca ".$id." não foi encontrado.", 404);
+        }
+
+        // VALIDANDO ALTERAÇÕES
+        $obBrand->nome_marca = $nome ?? $obBrand->nome_marca ;
+
+        // ATUALIZANDO INSTÂNCIA
+        $obBrand->atualizar();
+
+        // RETORNA OS DETALHES DO COMBUSTÍVEL ATUALIZADO
+        return [
+            'id'      => $obBrand->id,
+            'success' => true
+        ];
+    }
 }

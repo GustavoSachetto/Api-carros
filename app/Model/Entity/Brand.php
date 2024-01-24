@@ -33,6 +33,18 @@ class Brand
     }
 
     /**
+     * Método responsável por atualizar a instância atual no banco de dados
+     * @return boolean
+     */
+    public function atualizar()
+    {
+        // ATUALIZA A MARCA NO BANCO
+        return (new Database('marca'))->update('id = '.$this->id, [
+            'nome_marca' => $this->nome_marca
+        ]);
+    }
+
+    /**
      * Método rensponsavel por buscar as marcas
      * @param string $where
      * @param string $order
