@@ -57,3 +57,17 @@ $obRouter->delete('/api/v1/users/{id}', [
         return new Response(200, Service\User::setDeleteUser($request, $id));
     }
 ]);
+
+// ROTA DE TESTE USUÁRIOS (OPTIONS)
+$obRouter->options('/api/v1/users', [
+    function($request) {
+        return new Response(200, Service\User::getDetails($request));
+    }
+]);
+
+// ROTA DE TESTE USUÁRIOS ID (OPTIONS)
+$obRouter->options('/api/v1/users/{id}', [
+    function($request) {
+        return new Response(200, Service\User::getDetails($request));
+    }
+]);

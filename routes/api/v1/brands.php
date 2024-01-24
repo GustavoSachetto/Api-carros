@@ -26,3 +26,10 @@ $obRouter->post('/api/v1/brands', [
         return new Response(200, Service\Brand::setNewBrand($request));
     }
 ]);
+
+// ROTA DE TESTE MARCA (OPTIONS)
+$obRouter->options('/api/v1/brands', [
+    function($request) {
+        return new Response(200, Service\Brand::getDetails($request));
+    }
+]);
