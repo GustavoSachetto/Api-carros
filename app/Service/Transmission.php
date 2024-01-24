@@ -157,34 +157,4 @@ class Transmission extends Api
             'success' => true
         ];
     }
-
-    /**
-     * Método responsável por excluir uma transmissão
-     * @param Request $request
-     * @param integer $id
-     * @return array
-     */
-    public static function setDeleteTransmission($request, $id)
-    {
-        // VALIDA SE O ID É NUMERICO
-        if (!is_numeric($id)) {
-            throw new Exception("O id ".$id." não é válido.", 400);
-        }
-        
-        // BUSCA TRANSMISSÃO 
-        $obTransmission = EntityTransmission::getTransmissionById($id);
-
-        // VERIFICA SE A TRANSMISSÃO EXISTE
-        if (!$obTransmission instanceof EntityTransmission) {
-            throw new Exception("A transmissão ".$id." não foi encontrada.", 404);
-        }
-
-        // EXCLUIR INSTÂNCIA
-        $obTransmission->excluir();
-
-        // RETORNA OS DETALHES DA EXCLUSÃO
-        return [
-            'success' => true
-        ];
-    }
 }

@@ -45,16 +45,6 @@ class Transmission
     }
 
     /**
-     * Método responsável por excluir a instância atual no banco de dados
-     * @return boolean
-     */
-    public function excluir()
-    {
-        // EXCLUI A TRANSMISSÃO NO BANCO
-        return (new Database('transmissao'))->delete('id = '.$this->id);
-    }
-
-    /**
      * Método rensponsavel por buscar as transmissões
      * @param string $where
      * @param string $order
