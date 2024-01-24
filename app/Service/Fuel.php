@@ -109,7 +109,7 @@ class Fuel extends Api
         ];
     }
 
-     /**
+    /**
      * Método responsável por atualizar um combustível
      * @param Request $request
      * @return array
