@@ -12,13 +12,13 @@ class CarModel extends Api
      * @param Request $request
      * @return string
      */
-    private static function getCarModelsItens($request)
+    private static function getCarModelsItens($request, $where = null)
     {
         // ITENS
         $itens = [];
 
         // RESULTADOS DA PÁGINA
-        $results = EntityCarModel::getCarModels(null,'id ASC');
+        $results = EntityCarModel::getCarModels($where,'id ASC');
 
         // RENDERIZA O ITEM
         while($obCarModel = $results->fetchObject(EntityCarModel::class)) {
@@ -70,6 +70,17 @@ class CarModel extends Api
             'id_marca'    => $obCarModel->id_marca,
             'nome_modelo' => $obCarModel->nome_modelo
         ];
+    }
+
+    /**
+     * Método responsável por retornar modelos de veículos pelo id da marca
+     * @param Request $request
+     * @param integer $id
+     * @return array
+     */
+    public static function getCarModelsByBrand($request, $id)
+    {
+        return self::getCarModelsItens($request, 'id_marca = '.$id);
     }
 
     /**

@@ -10,10 +10,17 @@ $obRouter->get('/api/v1/carmodels', [
     }
 ]);
 
-// ROTA DE CONSULTA MODELO DE VEÍCULOS
-$obRouter->get('/api/v1/carmodels/{id}', [
+// ROTA DE CONSULTA MODELO DE VEÍCULOS PELO SEU ID
+$obRouter->get('/api/v1/carmodels/bycarmodels/{id}', [
     function($request, $id) {
         return new Response(200, Service\CarModel::getCarModel($request, $id));
+    }
+]);
+
+// ROTA DE CONSULTA MODELO DE VEÍCULOS PELO ID DA MARCA
+$obRouter->get('/api/v1/carmodels/bybrand/{id}', [
+    function($request, $id) {
+        return new Response(200, Service\CarModel::getCarModelsByBrand($request, $id));
     }
 ]);
 
