@@ -16,7 +16,7 @@ Para construir uma __API-REST-FULL__ tive que estudar muitos conceitos que me tr
 ## Documentação
 * __URL da API:__ https://gustavosachettoapi.000webhostapp.com/api/v1/cars
 * __Teste rotas no postman:__ https://www.postman.com/api-carros-gs/workspace/api-carros-developer-workspace
-* __Site (colaboração @Gustavo Gualda):__ https://consumo-api-carros.vercel.app/
+* __Site (colaboração [@Gustavo Gualda](https://github.com/iCrowleySHR)):__ https://consumo-api-carros.vercel.app/
 
 ## Banco de dados
 O banco de dados dessa api conta com 6 tabelas, elas são: 
