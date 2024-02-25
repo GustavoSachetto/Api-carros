@@ -16,17 +16,16 @@ class Transmission
      * Nome da transmissão
      * @var string
      */
-    public $nome_transmissao;
+    public $name;
 
     /**
      * Método responsavel pelo cadastro da instância atual no banco de dados
      * @return boolean
      */
-    public function cadastrar()
+    public function create()
     {
-        // INSERE A TRANSMISSÃO NO BANCO
-        $this->id = (new Database('transmissao'))->insert([
-            'nome_transmissao' => $this->nome_transmissao
+        $this->id = (new Database('transmission'))->insert([
+            'name' => $this->name
         ]);
 
         return true;
@@ -36,11 +35,10 @@ class Transmission
      * Método responsável por atualizar a instância atual no banco de dados
      * @return boolean
      */
-    public function atualizar()
+    public function update()
     {
-        // ATUALIZA A TRANSMISSÃO NO BANCO
-        return (new Database('transmissao'))->update('id = '.$this->id, [
-            'nome_transmissao' => $this->nome_transmissao
+        return (new Database('transmission'))->update('id = '.$this->id, [
+            'name' => $this->name
         ]);
     }
 
@@ -54,7 +52,7 @@ class Transmission
      */
     public static function getTransmissions($where = null, $order = null, $limit = null, $fields = '*')
     {
-        return (new Database('transmissao'))->select($where, $order, $limit, $fields);
+        return (new Database('transmission'))->select($where, $order, $limit, $fields);
     }
 
     /**
@@ -74,6 +72,6 @@ class Transmission
      */
     public static function getTransmissionByName($name)
     {
-        return self::getTransmissions('nome_transmissao = "'.$name.'"')->fetchObject(self::class);
+        return self::getTransmissions('name = "'.$name.'"')->fetchObject(self::class);
     }
 }

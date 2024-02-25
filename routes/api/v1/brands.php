@@ -5,6 +5,9 @@ use App\Service;
 
 // ROTA DE MARCA DA API
 $obRouter->get('/api/v1/brands', [
+    'middlewares' => [
+        'cache'
+    ],
     function($request) {
         return new Response(200, Service\Brand::getBrands($request));
     }

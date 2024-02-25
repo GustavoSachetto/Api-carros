@@ -16,7 +16,7 @@ class User
      * Nome do usuário
      * @var string
      */
-    public $nome;
+    public $name;
 
     /**
      * Email do usuário
@@ -28,26 +28,25 @@ class User
      * Senha do usuário
      * @var string
      */
-    public $senha;
+    public $password_hash;
 
     /**
      * Tipo de acesso do usuário
      * @var boolean
      */
-    public $acesso_admin = false;
+    public $admin_access = false;
 
     /**
      * Método responsável por cadastrar a instância atual no banco de dados
      * @return boolean
      */
-    public function cadastrar()
+    public function create()
     {
-        // INSERE O USUÁRIO NO BANCO
-        $this->id = (new Database('usuario'))->insert([
-            'nome'         => $this->nome,
+        $this->id = (new Database('user'))->insert([
+            'name'         => $this->name,
             'email'        => $this->email,
-            'senha'        => $this->senha,
-            'acesso_admin' => $this->acesso_admin
+            'password_hash'=> $this->password_hash,
+            'admin_access' => $this->admin_access
         ]);
 
         return true;
@@ -57,14 +56,13 @@ class User
      * Método responsável por atualizar a instância atual no banco de dados
      * @return boolean
      */
-    public function atualizar()
+    public function update()
     {
-        // ATUALIZA O USUÁRIO NO BANCO
-        return (new Database('usuario'))->update('id = '.$this->id, [
-            'nome'         => $this->nome,
+        return (new Database('user'))->update('id = '.$this->id, [
+            'name'         => $this->name,
             'email'        => $this->email,
-            'senha'        => $this->senha,
-            'acesso_admin' => (bool)$this->acesso_admin
+            'password_hash'=> $this->password_hash,
+            'admin_access' => $this->admin_access
         ]);
     }
 
@@ -72,10 +70,9 @@ class User
      * Método responsável por excluir a instância atual no banco de dados
      * @return boolean
      */
-    public function excluir()
+    public function delete()
     {
-        // EXCLUI  O USUÁRIO NO BANCO
-        return (new Database('usuario'))->delete('id = '.$this->id);
+        return (new Database('user'))->delete('id = '.$this->id);
     }
 
     /**
@@ -88,7 +85,7 @@ class User
      */
     public static function getUsers($where = null, $order = null, $limit = null, $fields = '*')
     {
-        return (new Database('usuario'))->select($where, $order, $limit, $fields);
+        return (new Database('user'))->select($where, $order, $limit, $fields);
     }
 
     /**

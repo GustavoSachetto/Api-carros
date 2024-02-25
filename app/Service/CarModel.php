@@ -14,22 +14,17 @@ class CarModel extends Api
      */
     private static function getCarModelsItens($request, $where = null)
     {
-        // ITENS
         $itens = [];
-
-        // RESULTADOS DA PÁGINA
         $results = EntityCarModel::getCarModels($where,'id ASC');
 
-        // RENDERIZA O ITEM
         while($obCarModel = $results->fetchObject(EntityCarModel::class)) {
             $itens[] = [
                 'id'          => $obCarModel->id,
-                'id_marca'    => $obCarModel->id_marca,
-                'nome_modelo' => $obCarModel->nome_modelo
+                'id_marca'    => $obCarModel->brand_id,
+                'nome_modelo' => $obCarModel->name
             ];
         }
 
-        // RETORNA OS MODELOS DOS VEÍCULOS
         return $itens;
     }
 
@@ -67,8 +62,8 @@ class CarModel extends Api
         // RETORNA O MODELO DE VEÍCULO
         return [
             'id'          => $obCarModel->id,
-            'id_marca'    => $obCarModel->id_marca,
-            'nome_modelo' => $obCarModel->nome_modelo
+            'id_marca'    => $obCarModel->brand_id,
+            'nome_modelo' => $obCarModel->name
         ];
     }
 
@@ -80,7 +75,7 @@ class CarModel extends Api
      */
     public static function getCarModelsByBrand($request, $id)
     {
-        return self::getCarModelsItens($request, 'id_marca = '.$id);
+        return self::getCarModelsItens($request, 'brand_id = '.$id);
     }
 
     /**
@@ -92,34 +87,34 @@ class CarModel extends Api
     {
         // POST VARS
         $postVars = $request->getPostVars();
-        $id_marca = $postVars['id_marca'] ?? null;
-        $nome     = $postVars['nome_modelo'] ?? null;
+        $brand_id = $postVars['id_marca'] ?? null;
+        $name     = $postVars['nome_modelo'] ?? null;
 
         // VALIDA O NOME DO MODELO E O ID DA MARCA
-        if (!isset($nome) || !isset($id_marca)) {
+        if (!isset($name) || !isset($brand_id)) {
             throw new Exception("Os campos 'nome_modelo' e 'id_marca' são obrigatórios.", 400);
-        } else if (empty($nome) || !isset($id_marca)) {
+        } else if (empty($name) || !isset($brand_id)) {
             throw new Exception("Os campos 'nome_modelo' e 'id_marca' não podem estar vazios.", 400);
         }
 
         // BUSCA MODELO DE VEÍCULO
-        $obCarModel = EntityCarModel::getCarModelByNameAndId($nome, $id_marca);
+        $obCarModel = EntityCarModel::getCarModelByNameAndId($name, $brand_id);
 
         // VALIDA SE O MODELO DE VEÍCULO JÁ EXISTE
         if ($obCarModel instanceof EntityCarModel) {
-            throw new Exception("Modelo ".$nome." já existente na marca de id ".$id_marca.".", 400);
+            throw new Exception("Modelo ".$name." já existente na marca de id ".$brand_id.".", 400);
         }
 
         // CADASTRA UMA NOVA INSTÂNCIA NO BANCO
         $obCarModel = new EntityCarModel;
-        $obCarModel->id_marca = $id_marca;
-        $obCarModel->nome_modelo = $nome;
-        $obCarModel->cadastrar();
+        $obCarModel->brand_id = $brand_id;
+        $obCarModel->name = $name;
+        $obCarModel->create();
 
         // RETORNA OS DETALHES DO MODELO CADASTRADO
         return [
             'id'          => $obCarModel->id,
-            'nome_modelo' => $obCarModel->nome_modelo,
+            'nome_modelo' => $obCarModel->name,
             'success'     => true
         ];
     }
@@ -138,22 +133,22 @@ class CarModel extends Api
 
         // POST VARS
         $postVars = $request->getPostVars();
-        $id_marca = $postVars['id_marca'] ?? null;
-        $nome     = $postVars['nome_modelo'] ?? null;
+        $brand_id = $postVars['id_marca'] ?? null;
+        $name     = $postVars['nome_modelo'] ?? null;
 
         // VALIDANDO CAMPO OBRIGATÓRIO
-        if (!isset($nome) || !isset($id_marca)) {
+        if (!isset($name) || !isset($brand_id)) {
             throw new Exception("Os campos 'nome_modelo' e 'id_marca' são obrigatórios.", 400);
-        } else if (empty($nome) || !isset($id_marca)) {
+        } else if (empty($name) || !isset($brand_id)) {
             throw new Exception("Os campos 'nome_modelo' e 'id_marca' não podem estar vazios.", 400);
         }
 
         // BUSCA MODELO DE VEÍCULO
-        $obCarModel = EntityCarModel::getCarModelByNameAndId($nome, $id_marca);
+        $obCarModel = EntityCarModel::getCarModelByNameAndId($name, $brand_id);
 
         // VALIDA SE O MODELO DE VEÍCULO JÁ EXISTE
         if ($obCarModel instanceof EntityCarModel) {
-            throw new Exception("Modelo ".$nome." já existente na marca de id ".$id_marca.".", 400);
+            throw new Exception("Modelo ".$name." já existente na marca de id ".$brand_id.".", 400);
         }
 
         // BUSCA MODELO DE VEÍCULO
@@ -165,11 +160,11 @@ class CarModel extends Api
         }
 
         // VALIDANDO ALTERAÇÕES
-        $obCarModel->id_marca    = $id_marca ?? $obCarModel->id_marca;
-        $obCarModel->nome_modelo = $nome ?? $obCarModel->nome_modelo;
+        $obCarModel->brand_id = $brand_id ?? $obCarModel->brand_id;
+        $obCarModel->name     = $name ?? $obCarModel->name;
 
         // ATUALIZANDO INSTÂNCIA
-        $obCarModel->atualizar();
+        $obCarModel->update();
 
         // RETORNA OS DETALHES DO MODELO DE VEÍCULO ATUALIZADO
         return [

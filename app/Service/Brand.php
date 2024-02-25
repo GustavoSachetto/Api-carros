@@ -9,32 +9,25 @@ class Brand extends Api
 {
     /**
      * Método responsável por obter a renderização dos itens da api
-     * @param Request $request
      * @return string
      */
     private static function getBrandsItens($request)
     {
-        // ITENS
         $itens = [];
-
-        // RESULTADOS DA PÁGINA
         $results = EntityBrand::getBrands(null,'id ASC');
 
-        // RENDERIZA O ITEM
         while($obBrand = $results->fetchObject(EntityBrand::class)) {
             $itens[] = [
                 'id'         => $obBrand->id,
-                'nome_marca' => $obBrand->nome_marca
+                'nome_marca' => $obBrand->name
             ];
         }
 
-        // RETORNA AS MARCAS
         return $itens;
     }
 
     /**
      * Método responsável por retornar as marcas cadastradas
-     * @param Resquest $request
      * @return array
      */
     public static function getBrands($request)
@@ -44,7 +37,6 @@ class Brand extends Api
 
     /**
      * Método responsável por retornar uma marca pelo seu id
-     * @param Request $request
      * @param integer $id
      * @return array
      */
@@ -66,7 +58,7 @@ class Brand extends Api
         // RETORNA A MARCA
         return [
             'id'         => $obBrand->id,
-            'nome_marca' => $obBrand->nome_marca
+            'nome_marca' => $obBrand->name
         ];
     }
 
@@ -79,32 +71,32 @@ class Brand extends Api
     {
         // POST VARS
         $postVars = $request->getPostVars();
-        $nome = $postVars['nome_marca'] ?? null;
+        $name = $postVars['nome_marca'] ?? null;
 
         // VALIDA O NOME
-        if (!isset($nome)) {
+        if (!isset($name)) {
             throw new Exception("O campo 'nome_marca' é obrigatório.", 400);
-        } else if (empty($nome)) {
+        } else if (empty($name)) {
             throw new Exception("O campo 'nome_marca' não pode estar vazio.", 400);
         }
 
         // BUSCA MARCA
-        $obBrand = EntityBrand::getBrandByName($nome);
+        $obBrand = EntityBrand::getBrandByName($name);
 
         // VALIDA SE A MARCA JÁ EXISTE
         if ($obBrand instanceof EntityBrand) {
-            throw new Exception("Marca ".$nome." já existente.", 400);
+            throw new Exception("Marca ".$name." já existente.", 400);
         }
 
         // CADASTRA UMA NOVA INSTÂNCIA NO BANCO
         $obBrand = new EntityBrand;
-        $obBrand->nome_marca = $nome;
-        $obBrand->cadastrar();
+        $obBrand->name = $name;
+        $obBrand->create();
 
         // RETORNA OS DETALHES DA MARCA CADASTRADA
         return [
             'id' => $obBrand->id,
-            'nome_marca' => $obBrand->nome_marca,
+            'nome_marca' => $obBrand->name,
             'success' => true
         ];
     }
@@ -123,21 +115,21 @@ class Brand extends Api
 
         // POST VARS
         $postVars = $request->getPostVars();
-        $nome = $postVars['nome_marca'] ?? null;
+        $name = $postVars['nome_marca'] ?? null;
 
         // VALIDANDO CAMPO OBRIGATÓRIO
-        if (!isset($nome)) {
+        if (!isset($name)) {
             throw new Exception("O campo 'nome_marca' é obrigatório.", 400);
-        } else if (empty($nome)) {
+        } else if (empty($name)) {
             throw new Exception("O campo 'nome_marca' não pode estar vazio.", 400);
         }
 
         // BUSCA MARCA
-        $obBrand = EntityBrand::getBrandByName($nome);
+        $obBrand = EntityBrand::getBrandByName($name);
 
         // VALIDA SE A MARCA JÁ EXISTE
         if ($obBrand instanceof EntityBrand) {
-            throw new Exception("Marca ".$nome." já existente.", 400);
+            throw new Exception("Marca ".$name." já existente.", 400);
         }
 
         // BUSCA MARCA 
@@ -149,10 +141,10 @@ class Brand extends Api
         }
 
         // VALIDANDO ALTERAÇÕES
-        $obBrand->nome_marca = $nome ?? $obBrand->nome_marca ;
+        $obBrand->name = $name ?? $obBrand->name ;
 
         // ATUALIZANDO INSTÂNCIA
-        $obBrand->atualizar();
+        $obBrand->update();
 
         // RETORNA OS DETALHES DO COMBUSTÍVEL ATUALIZADO
         return [

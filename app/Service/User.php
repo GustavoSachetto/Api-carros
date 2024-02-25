@@ -14,24 +14,19 @@ class User extends Api
      */
     private static function getUsersItens($request)
     {
-        // ITENS
         $itens = [];
-
-        // RESULTADOS DA PÁGINA
         $results = EntityUser::getUsers(null,'id ASC');
 
-        // RENDERIZA O ITEM
         while($obUser = $results->fetchObject(EntityUser::class)) {
             $itens[] = [
                 'id' => $obUser->id,
-                'nome' => $obUser->nome,
+                'nome' => $obUser->name,
                 'email' => $obUser->email,
-                'senha' => $obUser->senha,
-                'acesso_admin' => (bool)$obUser->acesso_admin
+                'senha' => $obUser->password_hash,
+                'acesso_admin' => (bool)$obUser->admin_access
             ];
         }
 
-        // RETORNA OS USUÁRIOS
         return $itens;
     }
 
@@ -69,10 +64,10 @@ class User extends Api
         // RETORNA O USUÁRIO
         return [
             'id'           => $obUser->id,
-            'nome'         => $obUser->nome,
+            'nome'         => $obUser->name,
             'email'        => $obUser->email,
-            'senha'        => $obUser->senha,
-            'acesso_admin' => (bool)$obUser->acesso_admin
+            'senha'        => $obUser->password_hash,
+            'acesso_admin' => (bool)$obUser->admin_access
         ];
     }
 
@@ -85,15 +80,15 @@ class User extends Api
     {
         // POST VARS
         $postVars = $request->getPostVars();
-        $nome = $postVars['nome'] ?? null;
+        $name = $postVars['nome'] ?? null;
         $email = $postVars['email'] ?? null;
-        $senha = $postVars['senha'] ?? null;
-        $acesso_admin = $postVars['acesso_admin'] ?? false;
+        $password_hash = $postVars['senha'] ?? null;
+        $admin_access = $postVars['acesso_admin'] ?? false;
 
         // VALIDA SE Á CAMPOS OBRIGATÓRIOS NÃO EXISTENTES
-        if (!isset($nome) || !isset($email) || !isset($senha)) {
+        if (!isset($name) || !isset($email) || !isset($password_hash)) {
             throw new Exception("Os campos 'nome', 'email' e 'senha' são obrigatórios.", 400);
-        } else if (empty($nome) || empty($email) || empty($senha)) {
+        } else if (empty($name) || empty($email) || empty($password_hash)) {
             throw new Exception("Os campos 'nome', 'email' e 'senha' não podem estar vazios.", 400);
         }
 
@@ -107,11 +102,11 @@ class User extends Api
 
         // CADASTRA UMA NOVA INSTÂNCIA NO BANCO
         $obUser = new EntityUser;
-        $obUser->nome         = $nome;
+        $obUser->name         = $name;
         $obUser->email        = $email;
-        $obUser->senha        = password_hash($senha, PASSWORD_DEFAULT);
-        $obUser->acesso_admin = $acesso_admin;
-        $obUser->cadastrar();
+        $obUser->password_hash        = password_hash($password_hash, PASSWORD_DEFAULT);
+        $obUser->admin_access = $admin_access;
+        $obUser->create();
 
         // RETORNA OS DETALHES DO USUÁRIO CADASTRADO
         return [
@@ -159,13 +154,13 @@ class User extends Api
         }
 
         // VALIDANDO ALTERAÇÕES
-        $obUser->nome         = $postVars['nome'] ?? $obUser->nome;
+        $obUser->name         = $postVars['nome'] ?? $obUser->name;
         $obUser->email        = $postVars['email'] ?? $obUser->email;
-        $obUser->acesso_admin = $postVars['acesso_admin'] ?? $obUser->acesso_admin;
-        $obUser->senha        = password_hash($postVars['senha'], PASSWORD_DEFAULT) ?? $obUser->senha;
+        $obUser->admin_access = $postVars['acesso_admin'] ?? $obUser->admin_access;
+        $obUser->password_hash        = password_hash($postVars['senha'], PASSWORD_DEFAULT) ?? $obUser->password_hash;
 
         // ATUALIZANDO INSTÂNCIA
-        $obUser->atualizar();
+        $obUser->update();
 
         // RETORNA OS DETALHES DO USUÁRIO ATUALIZADO
         return [
@@ -198,7 +193,7 @@ class User extends Api
         }
 
         // EXCLUIR INSTÂNCIA
-        $obUser->excluir();
+        $obUser->delete();
 
         // RETORNA OS DETALHES DA EXCLUSÃO
         return [

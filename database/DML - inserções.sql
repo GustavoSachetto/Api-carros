@@ -1,10 +1,10 @@
-use api_carros;
+use cars_api;
 
-insert into usuario (nome, email, senha, acesso_admin) values 
+insert into user (name, email, password_hash, admin_access) values 
 ('Gustavo Sachetto da Cruz', 'admin@email.com', '$2y$10$mUsr/jxR6XXs8lgXeaukPu/zkkOTIsX2dUus43h9sDBCuDu/upY/e', true),
 ('Usuário padrão', 'default@email.com', '$2y$10$R4iNbyE5R7WY7rB592SpRe8fpdoCpqNbU1sAR16o9gaA6GmFfdUri', false);
 
-insert into combustivel (nome_combustivel) values
+insert into fuel (name) values
 ('Gasolina'),
 ('Gasolina e Álcool'),
 ('Álcool'),
@@ -13,13 +13,13 @@ insert into combustivel (nome_combustivel) values
 ('Elétrico'),
 ('Hidrogênio');
 
-insert into transmissao (nome_transmissao) values
+insert into transmission (name) values
 ('Manual'), 
 ('Automática'),
 ('Automatizada'),
 ('Continuamente variável');
 
-insert into marca (nome_marca) values 
+insert into brand (name) values 
 ('Audi'),
 ('Bmw'),
 ('Chevrolet'),
@@ -45,7 +45,7 @@ insert into marca (nome_marca) values
 ('Volvo'),
 ('Volkswagen');
 
-insert into modelo (nome_modelo, id_marca) values 
+insert into model (name, brand_id) values 
 ("Prisma", 3),
 ("Onix", 3),
 ("Onix Plus", 3),
@@ -69,9 +69,9 @@ insert into modelo (nome_modelo, id_marca) values
 ("Classe C", 14);
 
 
-insert into veiculo (valor, versao, imagem_um, imagem_dois, imagem_tres, ano_producao, ano_lancamento, portas, motor, carroceria, 
-piloto_automatico, climatizador, vidro_automatico, am_fm, entrada_auxiliar, bluetooth, cd_player, dvd_player, leitor_mp3, entrada_usb, 
-id_modelo, id_combustivel, id_transmissao) values 
+insert into vehicle (price, version, primary_image, secondary_image, tertiary_image, production_year, release_year, doors, motor, bodywork, 
+automatic_pilot, air_conditioner, automatic_glass, am_fm, auxiliary_input, bluetooth, cd_player, dvd_player, mp3_reader, usb_port, 
+model_id, fuel_id, transmission_id) values 
 ("66900.00", "1.4 MPFI LT V8", 
 "https://image.webmotors.com.br/_fotos/anunciousados/gigante/2023/202312/20231215/chevrolet-prisma-1.4-mpfi-lt-8v-flex-4p-manual-wmimagem17445058936.jpg?s=fill&w=1920&h=1440&q=75", 
 "https://image.webmotors.com.br/_fotos/anunciousados/gigante/2023/202312/20231215/chevrolet-prisma-1.4-mpfi-lt-8v-flex-4p-manual-wmimagem17445015235.jpg?s=fill&w=1920&h=1440&q=75",

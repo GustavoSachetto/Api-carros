@@ -15,39 +15,39 @@ class Car extends Api
     private static function setCarArray(&$obCar) {
         return [
             'id'          => $obCar->id,
-            'valor'       => $obCar->valor,
-            'id_marca'   => $obCar->id_marca,
-            'marca'       => $obCar->nome_marca,
-            'id_modelo'  => $obCar->id_modelo,
-            'modelo'      => $obCar->nome_modelo,
-            'versao'      => $obCar->versao,
+            'valor'       => $obCar->price,
+            'id_marca'   => $obCar->brand_id,
+            'marca'       => $obCar->brand_name,
+            'id_modelo'  => $obCar->model_id,
+            'modelo'      => $obCar->model_name,
+            'versao'      => $obCar->version,
             'imagens'     => [
-                $obCar->imagem_um,
-                $obCar->imagem_dois,
-                $obCar->imagem_tres
+                $obCar->primary_image,
+                $obCar->secondary_image,
+                $obCar->tertiary_image
             ],
             'ano'            => [
-                'producao'   => $obCar->ano_producao,
-                'lancamento' => $obCar->ano_lancamento
+                'producao'   => $obCar->production_year,
+                'lancamento' => $obCar->release_year
             ],
-            'combustivel' => $obCar->nome_combustivel,
-            'portas'      => $obCar->portas,
-            'transmissao' => $obCar->nome_transmissao,
+            'combustivel' => $obCar->fuel_name,
+            'portas'      => $obCar->doors,
+            'transmissao' => $obCar->transmission_name,
             'motor'       => $obCar->motor,
-            'carroceria'  => $obCar->carroceria,
+            'carroceria'  => $obCar->bodywork,
             'conforto'    => [
-                'piloto_automatico' => (bool)$obCar->piloto_automatico,
-                'climatizador'      => (bool)$obCar->climatizador,
-                'vidro_automatico'  => (bool)$obCar->vidro_automatico
+                'piloto_automatico' => (bool)$obCar->automatic_pilot,
+                'climatizador'      => (bool)$obCar->air_conditioner,
+                'vidro_automatico'  => (bool)$obCar->automatic_glass
             ],
             'entretenimento' => [
                 'am_fm'            => (bool)$obCar->am_fm,
-                'entrada_auxiliar' => (bool)$obCar->entrada_auxiliar,
+                'entrada_auxiliar' => (bool)$obCar->auxiliary_input,
                 'bluetooth'        => (bool)$obCar->bluetooth,
                 'cd_player'        => (bool)$obCar->cd_player,
                 'dvd_player'       => (bool)$obCar->dvd_player,
-                'leitor_mp3'       => (bool)$obCar->leitor_mp3,
-                'entrada_usb'      => (bool)$obCar->entrada_usb
+                'leitor_mp3'       => (bool)$obCar->mp3_reader,
+                'entrada_usb'      => (bool)$obCar->usb_port
             ]
         ];
     }
@@ -60,28 +60,20 @@ class Car extends Api
      */
     private static function getCarItens($request, &$obPagination)
     {
-        // ITENS
         $itens = [];
-
-        // QUANTIDADE TOTAL DE REGISTROS
         $quatidadetotal = EntityCar::getCars(null, null, null,'COUNT(*) as qtn')->fetchObject()->qtn;
 
-        // PÁGINA ATUAL
         $queryParams = $request->getQueryParams();
         $paginaAtual = $queryParams['page'] ?? 1;
 
-        // INSTANCIA DE PAGINAÇÃO
         $obPagination = new Pagination($quatidadetotal, $paginaAtual, 5);
 
-        // RESULTADOS DA PÁGINA
-        $results = EntityCar::getCars(null,'veiculo.id DESC', $obPagination->getLimit());
+        $results = EntityCar::getCars(null,'vehicle.id DESC', $obPagination->getLimit());
 
-        // RENDERIZA O ITEM
         while($obCar = $results->fetchObject(EntityCar::class)) {
             $itens[] = self::setCarArray($obCar);
         }
 
-        // RETORNA OS CARROS
         return $itens;
     }
 
@@ -134,7 +126,19 @@ class Car extends Api
         $postVars = $request->getPostVars();
 
         // VALIDA SE Á CAMPOS OBRIGATÓRIOS NÃO EXISTENTES
-        if (!isset($postVars['valor']) || !isset($postVars['id_modelo']) || !isset($postVars['id_combustivel']) || !isset($postVars['id_transmissao']) || !isset($postVars['versao']) || !isset($postVars['imagem_um']) || !isset($postVars['ano_producao']) || !isset($postVars['ano_lancamento']) || !isset($postVars['portas']) || !isset($postVars['carroceria'])) {
+        if (
+            !isset($postVars['valor']) || 
+            !isset($postVars['id_modelo']) || 
+            !isset($postVars['id_combustivel']) || 
+            !isset($postVars['id_transmissao']) || 
+            !isset($postVars['versao']) || 
+            !isset($postVars['imagem_um']) || 
+            !isset($postVars['ano_producao']) || 
+            !isset($postVars['ano_lancamento']) || 
+            !isset($postVars['portas']) || 
+            !isset($postVars['carroceria'])) 
+            {
+
             // RETORNA ERRO
             throw new Exception("Um dos campos obrigatórios do veículo não está preenchido.", 400);
         }
@@ -143,12 +147,32 @@ class Car extends Api
         $obCar = new EntityCar;
 
         // ADICIONANDO VALORES
-        foreach ($postVars as $key => $value) {
-            $obCar->$key = $value;
-        }
-
+        $obCar->price           = $postVars['valor'];
+        $obCar->model_id        = $postVars['id_modelo'];
+        $obCar->fuel_id         = $postVars['id_combustivel'];
+        $obCar->transmission_id = $postVars['id_transmissao'];
+        $obCar->version         = $postVars['versao'];
+        $obCar->primary_image   = $postVars['imagem_um'];
+        $obCar->secondary_image = $postVars['imagem_dois'] ?? null;
+        $obCar->tertiary_image  = $postVars['imagem_tres'] ?? null;
+        $obCar->production_year = $postVars['ano_producao'];
+        $obCar->release_year    = $postVars['ano_lancamento'];
+        $obCar->doors           = $postVars['portas'];
+        $obCar->motor           = $postVars['motor'];
+        $obCar->bodywork        = $postVars['carroceria'];     
+        $obCar->automatic_pilot = $postVars['piloto_automatico'] ?? false;
+        $obCar->air_conditioner = $postVars['climatizador'] ?? false;
+        $obCar->automatic_glass = $postVars['vidro_automatico'] ?? false;
+        $obCar->am_fm           = $postVars['am_fm'] ?? false;        
+        $obCar->auxiliary_input = $postVars['entrada_auxiliar'] ?? false;
+        $obCar->bluetooth       = $postVars['bluetooth'] ?? false;         
+        $obCar->cd_player       = $postVars['cd_player'] ?? false;
+        $obCar->dvd_player      = $postVars['dvd_player'] ?? false;      
+        $obCar->mp3_reader      = $postVars['leitor_mp3'] ?? false;            
+        $obCar->usb_port        = $postVars['entrada_usb'] ?? false;            
+        
         // CADASTRANDO VEÍCULO
-        $obCar->cadastrar();
+        $obCar->create();
 
         // RETORNA O ID DO VEÍCULO CADASTRADO
         return [

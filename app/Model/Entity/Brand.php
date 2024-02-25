@@ -7,26 +7,25 @@ use App\Model\DatabaseManager\Database;
 class Brand
 {
     /**
-     * ID do marca
+     * ID da marca
      * @var integer
      */
     public $id;
 
     /**
-     * Nome do marca
+     * Nome da marca
      * @var string
      */
-    public $nome_marca;
+    public $name;
 
     /**
-     * Método responsavel pelo cadastro da instância atual no banco de dados
+     * Método responsável pelo cadastro da instância atual no banco de dados
      * @return boolean
      */
-    public function cadastrar()
+    public function create()
     {
-        // INSERE A MARCA NO BANCO
-        $this->id = (new Database('marca'))->insert([
-            'nome_marca' => $this->nome_marca
+        $this->id = (new Database('brand'))->insert([
+            'name' => $this->name
         ]);
 
         return true;
@@ -36,11 +35,10 @@ class Brand
      * Método responsável por atualizar a instância atual no banco de dados
      * @return boolean
      */
-    public function atualizar()
+    public function update()
     {
-        // ATUALIZA A MARCA NO BANCO
-        return (new Database('marca'))->update('id = '.$this->id, [
-            'nome_marca' => $this->nome_marca
+        return (new Database('brand'))->update('id = '.$this->id, [
+            'name' => $this->name
         ]);
     }
 
@@ -54,7 +52,7 @@ class Brand
      */
     public static function getBrands($where = null, $order = null, $limit = null, $fields = '*')
     {
-        return (new Database('marca'))->select($where, $order, $limit, $fields);
+        return (new Database('brand'))->select($where, $order, $limit, $fields);
     }
 
     /**
@@ -74,6 +72,6 @@ class Brand
      */
     public static function getBrandByName($name)
     {
-        return self::getBrands('nome_marca = "'.$name.'"')->fetchObject(self::class);
+        return self::getBrands('name = "'.$name.'"')->fetchObject(self::class);
     }
 }

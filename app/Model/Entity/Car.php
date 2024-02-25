@@ -16,97 +16,97 @@ class Car
      * ID da marca do veículo
      * @var integer
      */
-    public $id_marca;
+    public $brand_id;
 
     /**
      * ID do modelo do veículo
      * @var integer
      */
-    public $id_modelo;
+    public $model_id;
 
     /**
      * ID do tipo de combustível do veículo
      * @var integer
      */
-    public $id_combustivel;
+    public $fuel_id;
 
     /**
      * ID do tipo de transmissão do veículo
      * @var integer
      */
-    public $id_transmissao;
+    public $transmission_id;
 
     /**
      * Valor do veículo
      * @var decimal
      */
-    public $valor;
+    public $price;
 
     /**
      * Marca do veículo
      * @var string
      */
-    public $nome_marca;
+    public $brand_name;
 
     /**
      * Modelo do veículo
      * @var string
      */
-    public $nome_modelo;
+    public $model_name;
 
     /**
      * Versão do veículo
      * @var string
      */
-    public $versao;
+    public $version;
 
     /**
      * Imagem do veículo
      * @var string
      */
-    public $imagem_um;
+    public $primary_image;
 
     /**
      * Imagem do veículo
      * @var string
      */
-    public $imagem_dois = null;
+    public $secondary_image = null;
 
     /**
      * Imagem do veículo
      * @var string
      */
-    public $imagem_tres = null;
+    public $tertiary_image = null;
 
     /**
      * Ano de produção
      * @var string
      */
-    public $ano_producao;
+    public $production_year;
 
     /**
      * Ano de lançamento
      * @var string
      */
-    public $ano_lancamento;
+    public $release_year;
 
     /**
      * Modo de combustivel do veículo
      * @var string
      */
-    public $nome_combustivel;
+    public $fuel_name;
 
     /**
      * Quantidade de portas do veículo
      * @var integer
      */
-    public $portas;
+    public $doors;
 
     /**
      * Tipo de transmissão do veículo
      * @var string
      */
-    public $nome_transmissao;
+    public $transmission_name;
 
     /**
      * Tipo de motor do veículo
@@ -118,25 +118,25 @@ class Car
      * Modelo da carroceria do veículo
      * @var string
      */
-    public $carroceria;
+    public $bodywork;
 
     /**
      * Características de conforto do veículo
      * @var boolean
      */
-    public $piloto_automatico = false;
+    public $automatic_pilot = false;
 
     /**
      * Características de conforto do veículo
      * @var boolean
      */
-    public $climatizador = false;
+    public $air_conditioner = false;
 
     /**
      * Características de conforto do veículo
      * @var boolean
      */
-    public $vidro_automatico = false;
+    public $automatic_glass = false;
 
     /**
      * Características de entretenimento do veículo
@@ -148,7 +148,7 @@ class Car
      * Características de entretenimento do veículo
      * @var boolean
      */
-    public $entrada_auxiliar = false;
+    public $auxiliary_input = false;
 
     /**
      * Características de entretenimento do veículo
@@ -172,61 +172,61 @@ class Car
      * Características de entretenimento do veículo
      * @var boolean
      */
-    public $leitor_mp3 = false;
+    public $mp3_reader = false;
 
     /**
      * Características de entretenimento do veículo
      * @var boolean
      */
-    public $entrada_usb = false;
+    public $usb_port = false;
 
     /**
      * Variavel que armazena tabelas (padrões) a serem unidas na busca
      * @var array
      */
     private static $inner = [
-        'modelo'      => 'veiculo.id_modelo      = modelo.id',
-        'marca'       => 'modelo.id_marca        = marca.id',
-        'combustivel' => 'veiculo.id_combustivel = combustivel.id',
-        'transmissao' => 'veiculo.id_transmissao = transmissao.id'
+        'model'        => 'vehicle.model_id = model.id',
+        'brand'        => 'model.brand_id   = brand.id',
+        'fuel'         => 'vehicle.fuel_id  = fuel.id',
+        'transmission' => 'vehicle.transmission_id = transmission.id'
     ];
 
     /**
      * Variavel que armazena os campos (padrões) a serem buscados
      * @var string
      */
-    private static $fields = "veiculo.*, modelo.nome_modelo, modelo.id_marca,  marca.nome_marca, combustivel.nome_combustivel, transmissao.nome_transmissao";
+    private static $fields = "vehicle.*, model.name, model.brand_id,  brand.name, fuel.name, transmission.name";
 
      /**
      * Método responsavel pelo cadastro da instância atual no banco de dados
      * @return boolean
      */
-    public function cadastrar()
+    public function create()
     {
-        // INSERE O VEÍCULO NO BANCO
-        $this->id = (new Database('veiculo'))->insert([
-            "valor"             => $this->valor,
-	        "id_modelo"         => $this->id_modelo,
-            "id_combustivel"    => $this->id_combustivel,
-            "id_transmissao"    => $this->id_transmissao,
-	        "versao"            => $this->versao,
-	        "imagem_um"         => $this->imagem_um,
-	        "imagem_dois"       => $this->imagem_dois,
-	        "imagem_tres"       => $this->imagem_tres,
-	        "ano_producao"      => $this->ano_producao,
-            "ano_lancamento"    => $this->ano_lancamento,
-	        "portas"            => $this->portas,
-	        "motor"             => $this->motor,
-	        "carroceria"        => $this->carroceria,
-	        "piloto_automatico" => $this->piloto_automatico,
-	        "climatizador"      => $this->climatizador,
-	        "vidro_automatico"  => $this->vidro_automatico,
-	        "am_fm"             => $this->am_fm,
-	        "entrada_auxiliar"  => $this->entrada_auxiliar,
-	        "bluetooth"         => $this->bluetooth,
-	        "cd_player"         => $this->cd_player,
-	        "dvd_player"        => $this->dvd_player,
-	        "leitor_mp3"        => $this->leitor_mp3
+        $this->id = (new Database('vehicle'))->insert([
+            "price"              => $this->price,
+	        "model_id"           => $this->model_id,
+            "fuel_id"            => $this->fuel_id,
+            "transmission_id"    => $this->transmission_id,
+	        "version"            => $this->version,
+	        "primary_image"      => $this->primary_image,
+	        "secondary_image"    => $this->secondary_image,
+	        "tertiary_image"     => $this->tertiary_image,
+	        "production_year"    => $this->production_year,
+            "release_year"       => $this->release_year,
+	        "doors"              => $this->doors,
+	        "motor"              => $this->motor,
+	        "bodywork"           => $this->bodywork,
+	        "automatic_pilot"    => $this->automatic_pilot,
+	        "air_conditioner"    => $this->air_conditioner,
+	        "automatic_glass"    => $this->automatic_glass,
+	        "am_fm"              => $this->am_fm,
+	        "auxiliary_input"    => $this->auxiliary_input,
+	        "bluetooth"          => $this->bluetooth,
+	        "cd_player"          => $this->cd_player,
+	        "dvd_player"         => $this->dvd_player,
+	        "mp3_reader"         => $this->mp3_reader,
+	        "usb_port"           => $this->usb_port
         ]);
 
         return true;
@@ -242,7 +242,7 @@ class Car
      */
     public static function getCars($where = null, $order = null, $limit = null, $fields = null)
     {
-        return (new Database('veiculo'))->select($where, $order, $limit, $fields ?? self::$fields, self::$inner);
+        return (new Database('vehicle'))->select($where, $order, $limit, $fields ?? self::$fields, self::$inner);
     }
 
     /**
@@ -252,6 +252,6 @@ class Car
      */
     public static function getCarById($id)
     {
-        return self::getCars('veiculo.id = '. $id)->fetchObject(self::class);
+        return self::getCars('vehicle.id = '. $id)->fetchObject(self::class);
     }
 }

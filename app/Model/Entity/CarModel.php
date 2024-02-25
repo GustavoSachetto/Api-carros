@@ -16,24 +16,23 @@ class CarModel
      * ID da marca relacionada ao modelo
      * @var integer
      */
-    public $id_marca;
+    public $brand_id;
 
     /**
      * Nome do modelo 
      * @var string
      */
-    public $nome_modelo;
+    public $name;
 
     /**
      * Método responsável por cadastrar a instância atual no bando de dados
      * @return void
      */
-    public function cadastrar()
+    public function create()
     {
-        // INSERE UM NOVO MODELO
-        $this->id = (new Database('modelo'))->insert([
-            'id_marca'    => $this->id_marca,
-            'nome_modelo' => $this->nome_modelo
+        $this->id = (new Database('model'))->insert([
+            'brand_id'    => $this->brand_id,
+            'name'        => $this->name
         ]);
 
         return true;
@@ -43,12 +42,12 @@ class CarModel
      * Método responsável por atualizar a instância atual no banco de dados
      * @return boolean
      */
-    public function atualizar()
+    public function update()
     {
         // ATUALIZA O MODELO NO BANCO
-        return (new Database('modelo'))->update('id = '.$this->id, [
-            'id_marca'    => $this->id_marca,
-            'nome_modelo' => $this->nome_modelo
+        return (new Database('model'))->update('id = '.$this->id, [
+            'brand_id'    => $this->brand_id,
+            'name'        => $this->name
         ]);
     }
 
@@ -62,7 +61,7 @@ class CarModel
      */
     public static function getCarModels($where = null, $order = null, $limit = null, $fields = '*')
     {
-        return (new Database('modelo'))->select($where, $order, $limit, $fields);
+        return (new Database('model'))->select($where, $order, $limit, $fields);
     }
 
     /**
@@ -75,8 +74,14 @@ class CarModel
         return self::getCarModels('id = '.$id)->fetchObject(self::class);
     }
 
+    /**
+     * Método responsável por buscar um modelo de carro pelo nome e o id
+     * @param string $name
+     * @param integer $id
+     * @return CarModel
+     */
     public static function getCarModelByNameAndId($name, $id)
     {
-        return self::getCarModels('id_marca = '.$id.' AND nome_modelo = "'.$name.'"')->fetchObject(self::class);
+        return self::getCarModels('brand_id = '.$id.' AND name = "'.$name.'"')->fetchObject(self::class);
     }
 }

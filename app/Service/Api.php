@@ -4,7 +4,7 @@ namespace App\Service;
 
 class Api
 {
-     /**
+    /**
      * Método reponsável por retornar os detalhes da API
      * @param Request $request
      * @return array
@@ -27,13 +27,9 @@ class Api
      */
     protected static function getPagination($request, $obPagination)
     {
-        // QUERY PARAMS
         $queryParams = $request->getQueryParams();
-
-        // PÁGINA 
         $pages = $obPagination->getPages();
 
-        // RETORNO
         return [
             'paginaAtual'       => isset($queryParams['page']) ? $queryParams['page']: 1,
             'quantidadePaginas' => !empty($pages) ? count($pages)        : 1

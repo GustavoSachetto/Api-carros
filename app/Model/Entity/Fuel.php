@@ -16,17 +16,16 @@ class Fuel
      * Nome do combustível
      * @var string
      */
-    public $nome_combustivel;
+    public $name;
 
     /**
      * Método responsavel pelo cadastro da instância atual no banco de dados
      * @return boolean
      */
-    public function cadastrar()
+    public function create()
     {
-        // INSERE O COMBUSTÍVEL NO BANCO
-        $this->id = (new Database('combustivel'))->insert([
-            'nome_combustivel' => $this->nome_combustivel
+        $this->id = (new Database('fuel'))->insert([
+            'name' => $this->name
         ]);
 
         return true;
@@ -36,11 +35,10 @@ class Fuel
      * Método responsável por atualizar a instância atual no banco de dados
      * @return boolean
      */
-    public function atualizar()
+    public function update()
     {
-        // ATUALIZA O COMBUSTÍVEL NO BANCO
-        return (new Database('combustivel'))->update('id = '.$this->id, [
-            'nome_combustivel' => $this->nome_combustivel
+        return (new Database('fuel'))->update('id = '.$this->id, [
+            'name' => $this->name
         ]);
     }
 
@@ -54,7 +52,7 @@ class Fuel
      */
     public static function getFuels($where = null, $order = null, $limit = null, $fields = '*')
     {
-        return (new Database('combustivel'))->select($where, $order, $limit, $fields);
+        return (new Database('fuel'))->select($where, $order, $limit, $fields);
     }
 
     /**
@@ -74,6 +72,6 @@ class Fuel
      */
     public static function getFuelByName($name)
     {
-        return self::getFuels('nome_combustivel = "'.$name.'"')->fetchObject(self::class);
+        return self::getFuels('name = "'.$name.'"')->fetchObject(self::class);
     }
 }

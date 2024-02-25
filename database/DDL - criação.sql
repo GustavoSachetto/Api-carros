@@ -1,70 +1,70 @@
-create database api_carros;
-use api_carros;
+create database cars_api;
+use cars_api;
 
-create table usuario(
-	id int auto_increment not null primary key,
-    nome varchar(100) not null,
+create table user(
+	id int unsigned auto_increment primary key,
+    name varchar(100) not null,
     email varchar(255) unique not null,
-	acesso_admin tinyint not null,
-    senha varchar(255) not null
+	admin_access boolean not null,
+    password_hash varchar(255) not null
 );
 
-create table marca(
-	id int auto_increment not null primary key,
-    nome_marca char(25) not null unique
+create table brand(
+	id int unsigned auto_increment primary key,
+    name char(25) unique not null
 );
 
-create table modelo(
-	id int auto_increment not null primary key,
-    nome_modelo varchar(50) not null,
+create table model(
+	id int unsigned auto_increment primary key,
+    name varchar(50) not null,
     
-	id_marca int not null,
-    constraint FKid_marca foreign key (id_marca) references marca (id),
+	brand_id int unsigned not null,
+    constraint FK_brand_model foreign key (brand_id) references brand(id),
     
-    constraint UNmodelo_marca unique (nome_modelo, id_marca)
+    constraint UQ_model unique (name, brand_id)
 );
 
-create table combustivel(
-	id int auto_increment not null primary key,
-    nome_combustivel char(20) not null unique
+create table fuel(
+	id int unsigned auto_increment primary key,
+    name char(20) unique not null
 );
 
-create table transmissao(
-	id int auto_increment primary key not null,
-    nome_transmissao char(22) not null unique
+create table transmission(
+	id int unsigned auto_increment primary key,
+    name char(22) unique not null
 );
 
-create table veiculo(
-	id int auto_increment primary key not null,
-    valor decimal(11,2) not null,
-	versao varchar(50) not null,
-    imagem_um varchar(255) not null,
-	imagem_dois varchar(255),
-	imagem_tres varchar(255),
-	ano_producao int not null,
-    ano_lancamento int not null,
-    portas int not null,
+create table vehicle(
+	id int unsigned auto_increment primary key,
+    price decimal(11,2) not null,
+	version varchar(50) not null,
+    primary_image varchar(255) not null,
+	secondary_image varchar(255),
+	tertiary_image varchar(255),
+	production_year year not null,
+    release_year year not null,
+    doors int not null,
     motor decimal(2,1) not null,
-    carroceria char(20) not null,
-    piloto_automatico tinyint,
-    climatizador tinyint,
-    vidro_automatico tinyint,
-    am_fm tinyint,
-    entrada_auxiliar tinyint,
-    bluetooth tinyint,
-    cd_player tinyint,
-    dvd_player tinyint,
-    leitor_mp3 tinyint,
-    entrada_usb tinyint,
+    bodywork char(20) not null,
+	automatic_pilot boolean,
+    air_conditioner boolean,
+    automatic_glass boolean,
+    am_fm boolean,
+    auxiliary_input boolean,
+    bluetooth boolean,
+    cd_player boolean,
+    dvd_player boolean,
+    mp3_reader boolean,
+    usb_port boolean,
     
-    id_modelo int not null,
-    constraint FKid_modelo foreign key (id_modelo) references modelo (id),
+    model_id int unsigned not null,
+    constraint FK_model_vehicle foreign key (model_id) references model(id),
     
-    id_combustivel int not null,
-    constraint FKid_combustivel foreign key (id_combustivel) references combustivel (id),
+    fuel_id int unsigned not null,
+    constraint FK_fuel_vehicle foreign key (fuel_id) references fuel(id),
     
-    id_transmissao int not null,
-    constraint FKid_transmissao foreign key (id_transmissao) references transmissao (id),
+    transmission_id int unsigned not null,
+    constraint FK_transmission_vehicle foreign key (transmission_id) references transmission(id),
     
-     constraint UNveiculo unique (versao, id_modelo, id_combustivel, id_transmissao)
+    constraint UQ_vehicle unique (version, model_id, fuel_id, transmission_id)
 );

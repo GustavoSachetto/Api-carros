@@ -14,21 +14,16 @@ class Fuel extends Api
      */
     private static function getFuelsItens($request)
     {
-        // ITENS
         $itens = [];
-
-        // RESULTADOS DA PÁGINA
         $results = EntityFuel::getFuels(null,'id ASC');
 
-        // RENDERIZA O ITEM
         while($obFuel = $results->fetchObject(EntityFuel::class)) {
             $itens[] = [
                 'id'               => $obFuel->id,
-                'nome_combustivel' => $obFuel->nome_combustivel
+                'nome_combustivel' => $obFuel->name
             ];
         }
 
-        // RETORNA OS COMBUSTÍVEIS
         return $itens;
     }
 
@@ -66,7 +61,7 @@ class Fuel extends Api
         // RETORNA O COMBUSTÍVEL
         return [
             'id'               => $obFuel->id,
-            'nome_combustivel' => $obFuel->nome_combustivel
+            'nome_combustivel' => $obFuel->name
         ];
     }
 
@@ -79,32 +74,32 @@ class Fuel extends Api
     {
         // POST VARS
         $postVars = $request->getPostVars();
-        $nome = $postVars['nome_combustivel'] ?? null;
+        $name = $postVars['nome_combustivel'] ?? null;
 
         // VALIDA O NOME
-        if (!isset($nome)) {
+        if (!isset($name)) {
             throw new Exception("O campo 'nome_combustivel' é obrigatório.", 400);
-        } else if (empty($nome)) {
+        } else if (empty($name)) {
             throw new Exception("O campo 'nome_combustivel' não pode estar vazio.", 400);
         }
 
         // BUSCA COMBUSTÍVEL
-        $obFuel = EntityFuel::getFuelByName($nome);
+        $obFuel = EntityFuel::getFuelByName($name);
 
         // VALIDA SE O COMBUSTÍVEL JÁ EXISTE
         if ($obFuel instanceof EntityFuel) {
-            throw new Exception("Combustível ".$nome." já existente.", 400);
+            throw new Exception("Combustível ".$name." já existente.", 400);
         }
 
         // CADASTRA UMA NOVA INSTÂNCIA NO BANCO
         $obFuel = new EntityFuel;
-        $obFuel->nome_combustivel = $nome;
-        $obFuel->cadastrar();
+        $obFuel->name = $name;
+        $obFuel->create();
 
         // RETORNA OS DETALHES DO COMBUSTÍVEL CADASTRADO
         return [
             'id' => $obFuel->id,
-            'nome_combustivel' => $obFuel->nome_combustivel,
+            'nome_combustivel' => $obFuel->name,
             'success' => true
         ];
     }
@@ -146,10 +141,10 @@ class Fuel extends Api
         }
 
         // VALIDANDO ALTERAÇÕES
-        $obFuel->nome_combustivel = $postVars['nome_combustivel'] ?? $obFuel->nome_combustivel;
+        $obFuel->name = $postVars['nome_combustivel'] ?? $obFuel->name;
 
         // ATUALIZANDO INSTÂNCIA
-        $obFuel->atualizar();
+        $obFuel->update();
 
         // RETORNA OS DETALHES DO COMBUSTÍVEL ATUALIZADO
         return [

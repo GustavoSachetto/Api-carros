@@ -5,6 +5,9 @@ use App\Service;
 
 // ROTA DE TRANSMISSÃO DA API
 $obRouter->get('/api/v1/transmissions', [
+    'middlewares' => [
+        'cache'
+    ],
     function($request) {
         return new Response(200, Service\Transmission::getTransmissions($request));
     }

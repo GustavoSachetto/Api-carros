@@ -25,7 +25,8 @@ define('URL', getenv('URL'));
 MiddlewareQueue::setMap([
     'maintenance' => \App\Http\Middleware\Maintenance::class,
     'user-basic-auth' => \App\Http\Middleware\UserBasicAuth::class,
-    'user-admin-auth' => \App\Http\Middleware\UserAdminAuth::class
+    'user-admin-auth' => \App\Http\Middleware\UserAdminAuth::class,
+    'cache' => \App\Http\Middleware\Cache::class
 ]);
 
 // DEFINE O MAPEAMENTO DE MIDDLEWARES PADRÕES

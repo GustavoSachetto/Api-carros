@@ -27,7 +27,7 @@ class UserBasicAuth
         }
 
         // VALIDA A SENHA E RETORNA O USUÁRIO
-        return password_verify($_SERVER['PHP_AUTH_PW'], $obUser->senha) ? $obUser : false;
+        return password_verify($_SERVER['PHP_AUTH_PW'], $obUser->password_hash) ? $obUser : false;
     }
 
     /**

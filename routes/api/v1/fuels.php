@@ -5,6 +5,9 @@ use App\Service;
 
 // ROTA DE COMBUSTIVEL DA API
 $obRouter->get('/api/v1/fuels', [
+    'middlewares' => [
+        'cache'
+    ],
     function($request) {
         return new Response(200, Service\Fuel::getFuels($request));
     }

@@ -5,6 +5,9 @@ use App\Service;
 
 // ROTA DE MODELO DE VEÍCULOS DA API
 $obRouter->get('/api/v1/carmodels', [
+    'middlewares' => [
+        'cache'
+    ],
     function($request) {
         return new Response(200, Service\CarModel::getCarModels($request));
     }
@@ -19,6 +22,9 @@ $obRouter->get('/api/v1/carmodels/bycarmodels/{id}', [
 
 // ROTA DE CONSULTA MODELO DE VEÍCULOS PELO ID DA MARCA
 $obRouter->get('/api/v1/carmodels/bybrand/{id}', [
+    'middlewares' => [
+        'cache'
+    ],
     function($request, $id) {
         return new Response(200, Service\CarModel::getCarModelsByBrand($request, $id));
     }

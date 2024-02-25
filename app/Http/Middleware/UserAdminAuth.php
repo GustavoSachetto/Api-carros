@@ -17,7 +17,7 @@ class UserAdminAuth
         $obUser = $request->user;
 
         // VERIFICANDO SE O USUÁRIO CONTÉM O NÍVEL (ADMIN)
-        if ($obUser->acesso_admin) {
+        if ($obUser->admin_access) {
             return true;
         }
 
