@@ -43,7 +43,7 @@ __Rotas do veículo (carro):__
 | GET /cars          | __READ__       | __No Auth__        | Obtenha as ultimas cinco postagens da `vehicle` tabela                      |
 | GET /cars?page=2   | __READ__       | __No Auth__        | Obtenha até cinco postagens por páginação da `vehicle` tabela               |
 | GET /cars/{id}     | __READ__       | __No Auth__        | Obtenha um veículo atráves da consulta por id da `vehicle` tabela           |
-| POST /cars         | __CREATE__     | __Beader Token__   | Crie uma nova postagem da `vehicle` tabela                                  |
+| POST /cars         | __CREATE__     | __Token Auth__     | Crie uma nova postagem da `vehicle` tabela                                  |
 
 __Rotas dos usuários:__
 
@@ -62,8 +62,8 @@ __Rotas dos modelos do veículo:__
 | GET /carmodels          	   | __READ__       | __No Auth__        | Obtenha todas postagens da `model` tabela                     	          |
 | GET /carmodels/bycarmodels/{id}  | __READ__       | __No Auth__        | Obtenha uma postagem atráves da consulta por id da `model` tabela             |
 | GET /carmodels/bybrand/{id}      | __READ__       | __No Auth__        | Obtenha todas postagens atráves da consulta por id_marca na `model` tabela    |
-| POST /carmodels                  | __CREATE__     | __Beader Token__   | Crie uma nova postagem da `model` tabela                                      |
-| PUT /carmodels/{id}              | __UPDATE__     | __Beader Token__   | Atualize uma postagem da `model` tabela                                       | 
+| POST /carmodels                  | __CREATE__     | __Token Auth__     | Crie uma nova postagem da `model` tabela                                      |
+| PUT /carmodels/{id}              | __UPDATE__     | __Token Auth__     | Atualize uma postagem da `model` tabela                                       | 
 
 __Para acessar todas as rotas da api:__ https://www.postman.com/api-carros-gs/workspace/api-carros-developer-workspace
 
