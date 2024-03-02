@@ -46,14 +46,11 @@ class Pagination
   
     /**
      * Método responsável por calcular a páginação
-    * @return void
+     * @return void
      */
     private function calculate()
     {
-      //CALCULA O TOTAL DE PÁGINAS
       $this->pages = $this->results > 0 ? ceil($this->results / $this->limit) : 1;
-  
-      //VERIFICA SE A PÁGINA ATUAL NÃO EXCEDE O NÚMERO DE PÁGINAS
       $this->currentPage = $this->currentPage <= $this->pages ? $this->currentPage : $this->pages;
     }
   
@@ -73,10 +70,8 @@ class Pagination
      */
     public function getPages()
     {
-      //NÃO RETORNA PÁGINAS
       if($this->pages == 1) return [];
   
-      //PÁGINAS
       $pages = [];
       for($i = 1; $i <= $this->pages; $i++){
         $pages[] = [
@@ -87,5 +82,4 @@ class Pagination
   
       return $pages;
     }
-  
 }

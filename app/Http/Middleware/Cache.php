@@ -19,8 +19,8 @@ class Cache
     private function validateClientCache()
     {
         $headers = $this->request->getHeaders();
-        if (isset($headers['Cache-Control']) and $headers['Cache-Control'] == 'no-cache') return false;
-        
+
+        if (isset($headers['Cache-Control']) and $headers['Cache-Control'] == 'no-cache') return false; 
         return true;
     }
 
@@ -31,7 +31,6 @@ class Cache
     private function validateCacheTime()
     {   
         if (getenv('CACHE_TIME') <= 0) return false;
-        
         return true;
     }
 
@@ -41,8 +40,7 @@ class Cache
      */
     private function validateMethodGet()
     {
-        if ($this->request->getHttpMethod() != 'GET') return false;
-
+        if ($this->request->getHttpMethod() !== 'GET') return false; 
         return true;
     }
 
@@ -53,7 +51,6 @@ class Cache
     private function isCacheable()
     {
         if (!$this->validateCacheTime() or !$this->validateMethodGet() or !$this->validateClientCache()) return false;
-    
         return true;
     }
 
@@ -61,7 +58,8 @@ class Cache
      * Método responsável por retornar a hash do cache
      * @return string
      */
-    private function getHash() {
+    private function getHash() 
+    {
         $uri = $this->request->getRouter()->getUri();
         $queryParams = $this->request->getQueryParams();
 
@@ -78,6 +76,7 @@ class Cache
     public function handle($request, $next)
     {
         $this->request = $request;
+
         if (!$this->isCacheable()) return $next($request);
 
         $hash = $this->getHash();

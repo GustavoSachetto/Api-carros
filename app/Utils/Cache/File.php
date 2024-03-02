@@ -14,7 +14,6 @@ class File
         $diffTime = time() - $createTime;
         
         if ($diffTime > $expiration) return false;
-
         return true;
     }
 
@@ -23,7 +22,8 @@ class File
      * @param string
      * @return string
      */
-    private static function getFilePath($hash) {
+    private static function getFilePath($hash) 
+    {
         $dir = getenv('CACHE_DIR');
 
         if (!file_exists($dir)) {
@@ -33,21 +33,20 @@ class File
         return $dir.'/'.$hash;
     }
 
-
     /**
      * Método responsável por retornar o conteúdo gravado no cache
      * @param string $hash
      * @param int $expiration
      * @return mixed
      */
-    private static function getContentCache($hash, $expiration) {
+    private static function getContentCache($hash, $expiration) 
+    {
         $cacheFile = self::getFilePath($hash);
 
         if (!file_exists($cacheFile)) return false; 
         if (!self::validateCacheExpiration($cacheFile, $expiration)) return false;
 
-        $serialize = file_get_contents($cacheFile);
-        return unserialize($serialize);
+        return unserialize(file_get_contents($cacheFile));
     }
 
     /**
@@ -77,9 +76,8 @@ class File
             return $content;
         } 
 
-        $content = $function();
-        self::storageCache($hash, $content);
+        self::storageCache($hash, $function());
 
-        return $content;
+        return $function();
     }
 }

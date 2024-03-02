@@ -59,10 +59,7 @@ class Response
      */
     private function sendHeaders()
     {
-        // STATUS
         http_response_code($this->httpCode);
-
-        // ENVIAR HEADERS
         foreach ($this->headers as $key => $value) {
             header($key.': '.$value);
         }
@@ -74,10 +71,8 @@ class Response
      */
     public function sendReponse()
     {
-        // ENVIA OS HEADERS
         $this->sendHeaders();
 
-        // IMPRIME O CONTEUDO
         switch ($this->contentType) {
             case 'application/json':
                 echo json_encode($this->content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);

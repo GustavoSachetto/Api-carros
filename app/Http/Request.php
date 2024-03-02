@@ -61,10 +61,8 @@ class Request
      */
     private function setPostVars()
     {
-        // VERIFICA O MÉTODO DA REQUISIÇÃO
         if($this->httpMethod == 'GET') return false;
 
-        // POST JSON
         $inputRaw = file_get_contents('php://input');
         $this->postVars = (strlen($inputRaw) && empty($_POST)) ? json_decode($inputRaw, true) : $this->postVars;
     }
@@ -75,14 +73,10 @@ class Request
      */
     private function setUri()
     {
-        // URI COMPLETA (COM GETS)
         $this->uri = $_SERVER['REQUEST_URI'] ?? '';
-
-        // REMOVE GETS DA URI
-        $xURI = explode('?', $this->uri);
-
-        // SETANDO A URI SEM O GET
-        $this->uri = $xURI[0];
+        $xUri = explode('?', $this->uri);
+        
+        $this->uri = $xUri[0];
     }
 
     /**

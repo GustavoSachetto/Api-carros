@@ -8,26 +8,58 @@ use App\Model\Entity\User;
 class UserBasicAuth
 {
     /**
-     * Método responsável por retornar uma instância de usuário autenticado
-     * @return User
+     * Instância de usuário autenticado
+     * @var User
      */
-    private function getBasicAuthUser()
+    private $obUser;
+    
+    /**
+     * Método responsável por checar se o usuário e senha estão preenchidos
+     * @return void
+     */
+    private function checkUserAndPassword()
     {
-        // VERIFICA A EXISTÊNCIA DOS DADOS DE ACESSO
-        if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) {
-            return false;
+        if (!isset($_SERVER['PHP_AUTH_USER']) or !isset($_SERVER['PHP_AUTH_PW'])) {
+            throw new Exception("Acesso negado! Usuário ou senha não preenchidos.", 403);
         }
+    }
 
-        // BUSCA O USUÁRIO PELO E-MAIL
+    /**
+     * Método responsável por verificar se o usuário solicitado existe
+     * @return void
+     */
+    private function verifyUserExists()
+    {
         $obUser = User::getUserByEmail($_SERVER['PHP_AUTH_USER']);
-
-        // VERIFICA A INSTÂNCIA 
         if (!$obUser instanceof User) {
-            return false;
+            throw new Exception("Acesso negado! Usuário não existente.", 403);
         }
 
-        // VALIDA A SENHA E RETORNA O USUÁRIO
-        return password_verify($_SERVER['PHP_AUTH_PW'], $obUser->password_hash) ? $obUser : false;
+        $this->obUser = $obUser;
+    }
+
+    /**
+     * Método responsável por verificar se a senha do usuário é valida
+     * @return void
+     */
+    private function verifyPassword()
+    {
+        if (!password_verify($_SERVER['PHP_AUTH_PW'], $this->obUser->password_hash)) {
+            throw new Exception("Acesso negado! Usuário não autorizado.", 403);
+        }
+    }
+
+    /**
+     * Método responsável por retornar se o usuário foi autenticado com sucesso
+     * @return boolean
+     */
+    private function authenticatedUser()
+    {
+        $this->checkUserAndPassword();
+        $this->verifyUserExists();
+        $this->verifyPassword();
+
+        return true;
     }
 
     /**
@@ -37,16 +69,8 @@ class UserBasicAuth
      */
     private function basicAuth($request)
     {
-        // VERIFICA O USUÁRIO RECEBIDO
-        if ($obUser = $this->getBasicAuthUser()) {
-            $request->user = $obUser;
-            return true;
-        }
-
-        // EMITE O ERRO DE SENHA INVÁLIDA
-        throw new Exception("Usuário ou senha inválidos", 403);
+        if ($this->authenticatedUser()) $request->user = $this->obUser;        
     }
-
 
     /**
      * Método reponsável por executar o middleware
@@ -56,10 +80,8 @@ class UserBasicAuth
      */
     public function handle($request, $next)
     {
-        // REALIZA A VALIDAÇÃO DO ACESSO VIA BASIC AUTH
         $this->basicAuth($request);
 
-        // EXECUTA O PRÓXIMO NÍVEL DO MIDDLEWARE
         return $next($request);
     }
 }

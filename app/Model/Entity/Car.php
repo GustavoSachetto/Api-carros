@@ -38,7 +38,7 @@ class Car
 
     /**
      * Valor do veículo
-     * @var decimal
+     * @var float
      */
     public $price;
 
@@ -110,7 +110,7 @@ class Car
 
     /**
      * Tipo de motor do veículo
-     * @var decimal
+     * @var float
      */
     public $motor;
 
@@ -181,23 +181,12 @@ class Car
     public $usb_port = false;
 
     /**
-     * Variavel que armazena tabelas (padrões) a serem unidas na busca
-     * @var array
-     */
-    private static $inner = [
-        'model'        => 'vehicle.model_id = model.id',
-        'brand'        => 'model.brand_id   = brand.id',
-        'fuel'         => 'vehicle.fuel_id  = fuel.id',
-        'transmission' => 'vehicle.transmission_id = transmission.id'
-    ];
-
-    /**
-     * Variavel que armazena os campos (padrões) a serem buscados
+     * campo padrão a ser buscado
      * @var string
      */
-    private static $fields = "vehicle.*, model.name, model.brand_id,  brand.name, fuel.name, transmission.name";
+    private static $fields = "vehicle.*, model.name as model_name, model.brand_id,  brand.name as brand_name, fuel.name as fuel_name, transmission.name as transmission_name";
 
-     /**
+    /**
      * Método responsavel pelo cadastro da instância atual no banco de dados
      * @return boolean
      */
@@ -242,7 +231,14 @@ class Car
      */
     public static function getCars($where = null, $order = null, $limit = null, $fields = null)
     {
-        return (new Database('vehicle'))->select($where, $order, $limit, $fields ?? self::$fields, self::$inner);
+        $selectCar = new Database('vehicle');
+
+        $selectCar->join('model', 'vehicle.model_id = model.id');
+        $selectCar->join('brand', 'model.brand_id = brand.id');
+        $selectCar->join('fuel', 'vehicle.fuel_id  = fuel.id');
+        $selectCar->join('transmission', 'vehicle.transmission_id = transmission.id');
+
+        return $selectCar->select($where, $order, $limit, $fields ?? self::$fields);
     }
 
     /**

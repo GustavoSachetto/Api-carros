@@ -45,6 +45,12 @@ class Database
   private $table;
 
   /**
+   * Nomes das tabelas a serem unidas
+   * @var string
+   */
+  private $join;
+
+  /**
    * Instancia de conexão com o banco de dados
    * @var PDO
    */
@@ -117,18 +123,25 @@ class Database
    */
   public function insert($values)
   {
-    //DADOS DA QUERY
     $fields = array_keys($values);
     $binds  = array_pad([],count($fields),'?');
-
-    //MONTA A QUERY
     $query = 'INSERT INTO '.$this->table.' ('.implode(',',$fields).') VALUES ('.implode(',',$binds).')';
 
-    //EXECUTA O INSERT
     $this->execute($query,array_values($values));
 
-    //RETORNA O ID INSERIDO
     return $this->connection->lastInsertId();
+  }
+
+  /**
+   * Método responsável por unir tabelas na consulta no banco
+   * @param string $foreignTable
+   * @param string $match
+   * @param string $joinType
+   * @return void
+   */
+  public function join($foreignTable, $match, $joinType = "INNER JOIN")
+  {
+    $this->join .= " {$joinType} {$foreignTable} ON {$match} ";
   }
 
   /**
@@ -139,25 +152,15 @@ class Database
    * @param  string $fields
    * @return PDOStatement
    */
-  public function select($where = null, $order = null, $limit = null, $fields = '*', $inner = null)
+  public function select($where = null, $order = null, $limit = null, $fields = '*')
   {
-    //DADOS DA QUERY
     $where = strlen($where) ? 'WHERE '.$where : '';
     $order = strlen($order) ? 'ORDER BY '.$order : '';
     $limit = strlen($limit) ? 'LIMIT '.$limit : '';
-    $innerJoin = '';
+    $join  = strlen($this->join) ? $join = $this->join : $join = '';
 
-    // UNINDO TABELAS CASO NECESSÁRIO
-    if (isset($inner)) {
-      foreach ($inner as $key => $value) {
-        $innerJoin .= strlen($key) ? 'INNER JOIN '.$key.' ON '.$value. ' ': '';
-      }
-    }
+    $query = 'SELECT '.$fields.' FROM '.$this->table.' '.$join.' '.$where.' '.$order.' '.$limit;
 
-    //MONTA A QUERY
-    $query = 'SELECT '.$fields.' FROM '.$this->table.' '.$innerJoin.' '.$where.' '.$order.' '.$limit;
-
-    //EXECUTA A QUERY
     return $this->execute($query);
   }
 
@@ -169,16 +172,11 @@ class Database
    */
   public function update($where,$values)
   {
-    //DADOS DA QUERY
     $fields = array_keys($values);
-
-    //MONTA A QUERY
     $query = 'UPDATE '.$this->table.' SET '.implode('=?,',$fields).'=? WHERE '.$where;
 
-    //EXECUTAR A QUERY
     $this->execute($query,array_values($values));
 
-    //RETORNA SUCESSO
     return true;
   }
 
@@ -189,13 +187,10 @@ class Database
    */
   public function delete($where)
   {
-    //MONTA A QUERY
     $query = 'DELETE FROM '.$this->table.' WHERE '.$where;
 
-    //EXECUTA A QUERY
     $this->execute($query);
 
-    //RETORNA SUCESSO
     return true;
   }
 
