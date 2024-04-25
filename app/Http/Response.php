@@ -6,60 +6,58 @@ class Response
 {
     /**
      * Código do Status HTTP
-     * @var integer
      */
-    private $httpCode = 200; 
+    private int $httpCode = 200; 
 
     /**
      * Cabeçalho do Response
-     * @var array
      */
-    private $headers = [];
+    private array $headers = [];
 
     /**
      * Tipo de conteúdo que está sendo retornado
-     * @var string
      */
-    private $contentType = 'application/json';
+    private string $contentType = 'text/html';
 
     /**
      * Conteúdo do Response
-     * @var mixed
      */
-    private $content;
-
+    private mixed $content;
+ 
     /**
      * Método responsável por iniciar a classe e definir os valores
-     * @param integer $httpCode
-     * @param mixed $content
-     * @return void
      */
-    public function __construct($httpCode, $content)
+    public function __construct(int $httpCode, mixed $content, string $contentType = 'text/html')
     {
         $this->httpCode = $httpCode;
         $this->content  = $content;
-        $this->addHeader("Content-type", $this->contentType);
-        $this->addHeader("Access-Control-Allow-Origin", '*');
-        $this->addHeader("Access-Control-Allow-Headers", '*');
+        $this->setContentType($contentType);
+    }
+
+    /**
+     * Método responsável por alterar o content type do response
+     */
+    public function setContentType(string $contentType): void
+    {
+        $this->contentType = $contentType;
+        $this->addHeader('Content-Type', $contentType);
     }
 
     /**
      * Método responsável por adicionar um registro no cabeçalho de response
-     * @param string $contentType
-     * @return void
      */
-    public function addHeader($key, $value)
+    public function addHeader(string $key, string $value): void
     {
         $this->headers[$key] = $value;
     }
 
     /**
      * Método responsável por enviar os headers para o navegador
-     * @return void
      */
-    private function sendHeaders()
+    private function sendHeaders(): void
     {
         http_response_code($this->httpCode);
+
         foreach ($this->headers as $key => $value) {
             header($key.': '.$value);
         }
@@ -67,15 +65,17 @@ class Response
 
     /**
      * Método responsável por enviar a resposta para o usuário
-     * @return void
      */
-    public function sendReponse()
+    public function sendReponse(): void
     {
         $this->sendHeaders();
 
         switch ($this->contentType) {
+            case 'text/html':
+                echo $this->content;
+                break;
             case 'application/json':
-                echo json_encode($this->content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+                echo json_encode($this->content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
                 break;
         }
     }

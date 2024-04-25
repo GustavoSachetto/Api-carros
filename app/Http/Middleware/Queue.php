@@ -2,48 +2,43 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Request;
+use App\Http\Response;
 use Closure;
 use Exception;
 
 class Queue
 {
+    
     /**
      * Mapeamento de middlewares
-     * @var array
      */
-    private static $map = [];
+    private static array $map = [];
 
     /**
      * Mapeamento de middlewares que seráo carregados em todas as rotas
-     * @var array
      */
-    private static $default = [];
+    private static array $default = [];
 
     /**
      * Fila de middlewares a serem executados
-     * @var array
      */
-    private $middlewares = [];
+    private array $middlewares = [];
 
     /**
      * Função de execução do controlador
-     * @var Closure
      */
-    private $controller;
+    private Closure $controller;
 
     /**
      * Argumentos da função do controlador
-     * @var array
      */
-    private $controllerArgs = [];
+    private array $controllerArgs = [];
 
     /**
      * Método responsavel por construir a classe de fila de middlewares
-     * @param array $middlewares
-     * @param Closure $controller
-     * @param array $controllerArgs
      */
-    public function __construct($middlewares, $controller, $controllerArgs)
+    public function __construct(array $middlewares, Closure $controller, array $controllerArgs)
     {
         $this->middlewares    = array_merge(self::$default, $middlewares);
         $this->controller     = $controller;
@@ -52,39 +47,32 @@ class Queue
 
     /**
      * Método responsável por definir o mapeamento de middlewares
-     * @param array $map
-     * @return void
      */
-    public static function setMap($map)
+    public static function setMap(array $map): void
     {
         self::$map = $map;
     }
 
     /**
      * Método responsável por definir o mapeamento de middlewares padrões
-     * @param array $default
-     * @return void
      */
-    public static function setDefault($default)
+    public static function setDefault(array $default): void
     {
         self::$default = $default;
     }
 
     /**
      * Método responsável por executar o próximo nível da fila de middlewares
-     * @param Request $request
-     * @return Response
      */
-    public function next($request)
+    public function next(Request $request): Response
     {
         if (empty($this->middlewares)) return call_user_func_array($this->controller, $this->controllerArgs);
-    
         $middleware = array_shift($this->middlewares);
 
         if(!isset(self::$map[$middleware])) {
             throw new Exception("Problemas ao processar o middleware da requisição", 500);
         }
-
+        
         $queue = $this;
         $next  = function ($request) use ($queue) {
             return $queue->next($request);

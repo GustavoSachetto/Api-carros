@@ -2,15 +2,17 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Exception;
+use App\Http\Request;
+use App\Http\Response;
 
 class Maintenance
 {
     /**
-     * Método responsável por verificar o status de manutenção da página
-     * @return void
+     * Método responsável por verificar se a página está em estado de manutenção
      */
-    private function verifyStatus()
+    private function checkStatus(): void
     {
         if (getenv('MAINTENANCE') == 'true') {
             throw new Exception("Página em manutenção. Tente novamente mais tarde.", 200);
@@ -19,14 +21,10 @@ class Maintenance
 
     /**
      * Método reponsável por executar o middleware
-     * @param Request $request
-     * @param Closure $next
-     * @return Reponse
      */
-    public function handle($request, $next)
+    public function handle(Request $request, Closure $next): Response
     {
-        $this->verifyStatus();
-
+        $this->checkStatus();
         return $next($request);
     }
 }

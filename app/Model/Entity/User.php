@@ -2,109 +2,84 @@
 
 namespace App\Model\Entity;
 
+use PDOStatement;
 use App\Model\DatabaseManager\Database;
 
 class User
 {
-    /**
-     * ID do usuário
-     * @var integer
-     */
-    public $id;
+    public int $id;
+    
+    public string $name;
+    public string $email;
+    public string $password_hash;
+    public bool $admin_access = false;
 
-    /**
-     * Nome do usuário
-     * @var string
-     */
-    public $name;
-
-    /**
-     * Email do usuário
-     * @var string
-     */
-    public $email;
-
-    /**
-     * Senha do usuário
-     * @var string
-     */
-    public $password_hash;
-
-    /**
-     * Tipo de acesso do usuário
-     * @var boolean
-     */
-    public $admin_access = false;
+    public bool $deleted = false;
 
     /**
      * Método responsável por cadastrar a instância atual no banco de dados
-     * @return boolean
      */
-    public function create()
+    public function create(): bool
     {
         $this->id = (new Database('user'))->insert([
-            'name'         => $this->name,
-            'email'        => $this->email,
-            'password_hash'=> $this->password_hash,
-            'admin_access' => $this->admin_access
+            'name'          => $this->name,
+            'email'         => $this->email,
+            'admin_access'  => $this->admin_access,
+            'password_hash' => $this->password_hash,
+            'deleted'       => $this->deleted
         ]);
 
         return true;
     }
 
     /**
-     * Método responsável por atualizar a instância atual no banco de dados
-     * @return boolean
+     * Método responsável por atualizar os dados do banco com a instância atual
      */
-    public function update()
+    public function update(): bool
     {
         return (new Database('user'))->update('id = '.$this->id, [
-            'name'         => $this->name,
-            'email'        => $this->email,
-            'password_hash'=> $this->password_hash,
-            'admin_access' => $this->admin_access
+            'name'          => $this->name,
+            'email'         => $this->email,
+            'admin_access'  => $this->admin_access,
+            'password_hash' => $this->password_hash,
+            'deleted'       => $this->deleted
         ]);
     }
 
     /**
-     * Método responsável por excluir a instância atual no banco de dados
-     * @return boolean
+     * Método responsável por excluir um dado no banco com a instância atual
      */
-    public function delete()
+    public function delete(): bool
     {
-        return (new Database('user'))->delete('id = '.$this->id);
+        return (new Database('user'))->securityDelete('id = '.$this->id);
     }
 
     /**
-     * Método responsável por buscar os usuários no banco
-     * @param string $where
-     * @param string $order
-     * @param string $limit
-     * @param string $fields
-     * @return PDOStatement
+     * Método que retorna os usuários cadastrados no banco
      */
-    public static function getUsers($where = null, $order = null, $limit = null, $fields = '*')
+    public static function getUsers(
+        string $where = null, 
+        string $order = null, 
+        string $limit = null, 
+        string $fields = '*'
+        ): PDOStatement
     {
         return (new Database('user'))->select($where, $order, $limit, $fields);
     }
 
     /**
-     * Método responsável por buscar um usuário pelo seu ID
-     * @param integer $id
-     * @return User
+     * Método reponsável por retornar um usuário com base em seu e-mail
      */
-    public static function getUserById($id)
+    public static function getUserByEmail(string $email): User|string
     {
-        return self::getUsers('id = '.$id)->fetchObject(self::class);
+        return (new Database('user'))->select("email = '{$email}'")->fetchObject(self::class);
     }
-    
+
     /**
-     * Método responsável por buscar um usuário pelo seu E-mail
-     * @param string $email
-     * @return User
+     * Método reponsável por retornar um usuário com base no seu ID
      */
-    public static function getUserByEmail($email)
+    public static function getUserById(int $id): User|string
     {
-        return self::getUsers('email = "'.$email.'"')->fetchObject(self::class);
+        return self::getUsers("id = {$id}")->fetchObject(self::class);
     }
 }

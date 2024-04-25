@@ -11,40 +11,33 @@ class Router
 {
     /**
      * URL completa do projeto (raiz)
-     * @var string
      */
-    private $url= '';
+    private string $url= '';
 
     /**
      * Prefixo de todas as rotas
-     * @var string
      */
-    private $prefix = '';
+    private string $prefix = '';
 
     /**
      * Índice de rotas
-     * @var array
      */
-    private $routes = [];
+    private array $routes = [];
 
     /**
      * Instância de request
-     * @var Request
      */
-    private $request;
+    private Request $request;
 
     /**
      * Content type padrão do response
-     * @var string
      */
-    private $contentType = 'application/json';
+    private string $contentType = 'application/json';
 
     /**
      * Método responsável por iniciar a classe
-     * @param string $url
-     * @return void
      */
-    public function __construct($url)
+    public function __construct(string $url)
     {
         $this->request  = new Request($this);
         $this->url      = $url;   
@@ -53,32 +46,26 @@ class Router
 
     /**
      * Método responsável por alterar o valor do content type
-     * @param string $contentType
-     * @return void
      */
-    public function setContentType($contentType)
+    public function setContentType(string $contentType): void
     {
         $this->contentType = $contentType;
     }
 
     /**
      * Método responsável por definir o prefixo das rotas
-     * @return void
      */
-    private function setPrefix()
+    private function setPrefix(): void
     {
         $parseUrl = parse_url($this->url);
+
         $this->prefix = $parseUrl['path'] ?? '';
     }
 
     /**
      * Método responsável por adicionar uma rota na classe
-     * @param string $method
-     * @param string $route
-     * @param array @params
-     * @return void
      */
-    private function addRoute($method, $route, $params = [])
+    private function addRoute(string $method, string $route, array $params = []): void
     {
         foreach ($params as $key => $value) {
             if ($value instanceof Closure) {
@@ -95,74 +82,58 @@ class Router
             $route = preg_replace($patternVariable, '(.*?)', $route);
             $params['variables'] = $matches[1];
         }
-
         $route = rtrim($route,'/');
         $patternRoute = '/^'. str_replace('/', '\/', $route) . '$/';
 
         $this->routes[$patternRoute][$method] = $params;
+
     }
 
     /**
      * Método responsável por definir uma rota de GET
-     * @param string $route
-     * @param array @params
-     * @return void
      */
-    public function get($route, $params = [])
+    public function get(string $route, array $params = []): void
     {
-        return $this->addRoute('GET', $route, $params);
-    }
-
-    /**
-     * Método responsável por definir uma rota de OPTIONS
-     * @param string $route
-     * @param array $params
-     * @return void
-     */
-    public function options($route, $params = [])
-    {
-        return $this->addRoute('OPTIONS', $route, $params);
+        $this->addRoute('GET', $route, $params);
     }
 
     /**
      * Método responsável por definir uma rota de POST
-     * @param string $route
-     * @param array @params
-     * @return void
      */
-    public function post($route, $params = [])
+    public function post(string $route, array $params = []): void
     {
-        return $this->addRoute('POST', $route, $params);
+        $this->addRoute('POST', $route, $params);
     }
 
     /**
      * Método responsável por definir uma rota de PUT
-     * @param string $route
-     * @param array @params
-     * @return void
      */
-    public function put($route, $params = [])
+    public function put(string $route, array $params = []): void
     {
-        return $this->addRoute('PUT', $route, $params);
+        $this->addRoute('PUT', $route, $params);
     }
 
     /**
      * Método responsável por definir uma rota de DELETE
-     * @param string $route
-     * @param array @params
-     * @return void
      */
-    public function delete($route, $params = [])
+    public function delete(string $route, array $params = []): void
     {
-        return $this->addRoute('DELETE', $route, $params);
+        $this->addRoute('DELETE', $route, $params);
+    }
+
+    /**
+     * Método responsável por definir uma rota de OPTIONS
+     */
+    public function options(string $route, array $params = []): void
+    {
+        $this->addRoute('OPTIONS', $route, $params);
     }
 
     
     /**
      * Método responsável por retornar a URI desconsiderando o prefixo
-     * @return string
      */
-    public function getUri()
+    public function getUri(): string
     {
         $uri = $this->request->getUri();
         $xUri = strlen($this->prefix) ? explode($this->prefix, $uri) : [$uri];
@@ -172,9 +143,8 @@ class Router
 
     /**
      * Método responsável por retornar os dados da rota atual
-     * @return array
      */
-    private function getRoute()
+    private function getRoute(): array
     {
         $uri = $this->getUri();
         $httpMethod = $this->request->getHttpMethod();
@@ -198,9 +168,8 @@ class Router
 
     /**
      * Método responsável por executar a rota atual
-     * @return Response
      */
-    public function run()
+    public function run(): Response
     {
         try {
             $route = $this->getRoute();
@@ -216,8 +185,9 @@ class Router
                 $name = $parameter->getName();
                 $args[$name] = $route['variables'][$name] ?? '';
             }
-            
+
             return (new MiddlewareQueue($route['middlewares'],$route['controller'], $args))->next($this->request);
+            
         } catch (Exception $e) {
             return new Response($e->getCode(), $this->getErrorMessage($e->getMessage()), $this->contentType);
         }
@@ -225,10 +195,8 @@ class Router
 
     /**
      * Método responsável por retornar a mensagem de erro de acordo com o content type
-     * @param string $message
-     * @return mixed
      */
-    private function getErrorMessage($message)
+    private function getErrorMessage(string $message): mixed
     {
         switch ($this->contentType) {
             case 'application/json':
@@ -236,24 +204,24 @@ class Router
                     'error' => $message
                 ];
                 break;
+            default:
+                return $message;
+                break;
         }
     }
 
     /**
      * Método responsavel por retornar a URL atual
-     * @return string
      */
-    public function getCurrentUrl()
+    public function getCurrentUrl(): string
     {
         return $this->url.$this->getUri();
     }
 
     /**
      * Método responsável por redirecionar a URL
-     * @param string $route
-     * @return void
      */
-    public function redirect($route)
+    public function redirect(string $route): void
     {
         $url = $this->url.$route;
 

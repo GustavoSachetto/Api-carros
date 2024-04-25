@@ -1,17 +1,15 @@
 <?php
 
-include __DIR__.'/api/v1/auth.php';
+include 'api/v1/auth.php';
 
-include __DIR__.'/api/v1/default.php';
+include 'api/v1/brand.php';
 
-include __DIR__.'/api/v1/brands.php';
+include 'api/v1/car.php';
 
-include __DIR__.'/api/v1/car_models.php';
+include 'api/v1/carmodel.php';
 
-include __DIR__.'/api/v1/cars.php';
+include 'api/v1/fuel.php';
 
-include __DIR__.'/api/v1/fuels.php';
+include 'api/v1/transmission.php';
 
-include __DIR__.'/api/v1/transmissions.php';
-
-include __DIR__.'/api/v1/users.php';
+include 'api/v1/user.php';

@@ -2,75 +2,73 @@
 
 namespace App\Model\Entity;
 
+use PDOStatement;
 use App\Model\DatabaseManager\Database;
 
 class Fuel
 {
-    /**
-     * ID do combustível
-     * @var integer
-     */
-    public $id;
+    public int $id;
+
+    public string $name;
+
+    public bool $deleted = false;
 
     /**
-     * Nome do combustível
-     * @var string
+     * Método responsável por cadastrar a instância atual no banco de dados
      */
-    public $name;
-
-    /**
-     * Método responsavel pelo cadastro da instância atual no banco de dados
-     * @return boolean
-     */
-    public function create()
+    public function create(): bool
     {
         $this->id = (new Database('fuel'))->insert([
-            'name' => $this->name
+            'name'  => $this->name,
         ]);
 
         return true;
     }
 
     /**
-     * Método responsável por atualizar a instância atual no banco de dados
-     * @return boolean
+     * Método responsável por atualizar os dados do banco com a instância atual
      */
-    public function update()
+    public function update(): bool
     {
         return (new Database('fuel'))->update('id = '.$this->id, [
-            'name' => $this->name
+            'name'     => $this->name,
+            'deleted'  => $this->deleted,
         ]);
     }
 
     /**
-     * Método rensponsavel por buscar os combustíveis
-     * @param string $where
-     * @param string $order
-     * @param string $limit
-     * @param string $fields
-     * @return PDOStatement
+     * Método responsável por excluir um dado no banco com a instância atual
      */
-    public static function getFuels($where = null, $order = null, $limit = null, $fields = '*')
+    public function delete(): bool
+    {
+        return (new Database('fuel'))->securityDelete('id = '.$this->id);
+    }
+
+    /**
+     * Método que retorna os combustíveis cadastrados no banco
+     */
+    public static function getFuels(
+        string $where = null, 
+        string $order = null, 
+        string $limit = null, 
+        string $fields = '*'
+        ): PDOStatement
     {
         return (new Database('fuel'))->select($where, $order, $limit, $fields);
     }
 
     /**
-     * Método reponsável por retornar o combustível pelo id
-     * @param integer $id
-     * @return Fuel
+     * Método reponsável por retornar uma combustível pelo seu ID
      */
-    public static function getFuelById($id)
+    public static function getFuelById(string $id): Fuel|string
     {
         return self::getFuels('id = '. $id)->fetchObject(self::class);
     }
 
     /**
-     * Método responsável por buscar um combustível pelo nome
-     * @param string $name
-     * @return Fuel
+     * Método responsável por retornar o combustível pelo nome
      */
-    public static function getFuelByName($name)
+    public static function getFuelByName(string $name): Fuel|string
     {
         return self::getFuels('name = "'.$name.'"')->fetchObject(self::class);
     }

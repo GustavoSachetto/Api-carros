@@ -2,86 +2,77 @@
 
 namespace App\Model\Entity;
 
+use PDOStatement;
 use App\Model\DatabaseManager\Database;
 
-class CarModel
+class Carmodel
 {
-    /**
-     * ID do modelo
-     * @var integer
-     */
-    public $id;
+    public int $id;
+
+    public int $brand_id;
+    public string $name;
+
+    public bool $deleted = false;
 
     /**
-     * ID da marca relacionada ao modelo
-     * @var integer
+     * Método responsável por cadastrar a instância atual no banco de dados
      */
-    public $brand_id;
-
-    /**
-     * Nome do modelo 
-     * @var string
-     */
-    public $name;
-
-    /**
-     * Método responsável por cadastrar a instância atual no bando de dados
-     * @return void
-     */
-    public function create()
+    public function create(): bool
     {
         $this->id = (new Database('model'))->insert([
-            'brand_id'    => $this->brand_id,
-            'name'        => $this->name
+            'name'      => $this->name,
+            'brand_id'  => $this->brand_id
         ]);
 
         return true;
     }
 
     /**
-     * Método responsável por atualizar a instância atual no banco de dados
-     * @return boolean
+     * Método responsável por atualizar os dados do banco com a instância atual
      */
-    public function update()
+    public function update(): bool
     {
-        // ATUALIZA O MODELO NO BANCO
         return (new Database('model'))->update('id = '.$this->id, [
-            'brand_id'    => $this->brand_id,
-            'name'        => $this->name
+            'name'      => $this->name,
+            'brand_id'  => $this->brand_id,
+            'deleted'   => $this->deleted
         ]);
     }
 
     /**
-     * Método responsável por retornar os modelos do veíclo
-     * @param string $where
-     * @param string $order
-     * @param string $limit
-     * @param string $fields
-     * @return PDOStatement
+     * Método responsável por excluir um dado no banco com a instância atual
      */
-    public static function getCarModels($where = null, $order = null, $limit = null, $fields = '*')
+    public function delete(): bool
+    {
+        return (new Database('model'))->securityDelete('id = '.$this->id);
+    }
+
+    /**
+     * Método que retorna os modelos de veículo cadastrados no banco
+     */
+    public static function getCarmodels(
+        string $where = null, 
+        string $order = null, 
+        string $limit = null, 
+        string $fields = '*'
+        ): PDOStatement
     {
         return (new Database('model'))->select($where, $order, $limit, $fields);
     }
 
     /**
-     * Método responsável por buscar um modelo de carro pelo seu ID
-     * @param integer $id
-     * @return CarModel
+     * Método reponsável por retornar um modelo de veículo pelo seu id
      */
-    public static function getCarModelById($id)
+    public static function getCarmodelById(string $id): Carmodel|string
     {
-        return self::getCarModels('id = '.$id)->fetchObject(self::class);
+        return self::getCarmodels('id = '. $id)->fetchObject(self::class);
     }
-
+    
     /**
-     * Método responsável por buscar um modelo de carro pelo nome e o id
-     * @param string $name
-     * @param integer $id
-     * @return CarModel
+     * Método responsável por retornar o modelo de veículo pelo seu nome
      */
-    public static function getCarModelByNameAndId($name, $id)
+    public static function getCarmodelByNameAndId(string $name, int $brand_id): Carmodel|string
     {
-        return self::getCarModels('brand_id = '.$id.' AND name = "'.$name.'"')->fetchObject(self::class);
+        return self::getCarModels("brand_id = {$brand_id} AND name = '{$name}'")->fetchObject(self::class);
     }
 }

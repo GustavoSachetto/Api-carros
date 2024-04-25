@@ -2,75 +2,73 @@
 
 namespace App\Model\Entity;
 
+use PDOStatement;
 use App\Model\DatabaseManager\Database;
 
 class Transmission
 {
-    /**
-     * ID da transmissão
-     * @var integer
-     */
-    public $id;
+    public int $id;
+
+    public string $name;
+
+    public bool $deleted = false;
 
     /**
-     * Nome da transmissão
-     * @var string
+     * Método responsável por cadastrar a instância atual no banco de dados
      */
-    public $name;
-
-    /**
-     * Método responsavel pelo cadastro da instância atual no banco de dados
-     * @return boolean
-     */
-    public function create()
+    public function create(): bool
     {
         $this->id = (new Database('transmission'))->insert([
-            'name' => $this->name
+            'name'  => $this->name,
         ]);
 
         return true;
     }
 
     /**
-     * Método responsável por atualizar a instância atual no banco de dados
-     * @return boolean
+     * Método responsável por atualizar os dados do banco com a instância atual
      */
-    public function update()
+    public function update(): bool
     {
         return (new Database('transmission'))->update('id = '.$this->id, [
-            'name' => $this->name
+            'name'     => $this->name,
+            'deleted'  => $this->deleted,
         ]);
     }
 
     /**
-     * Método rensponsavel por buscar as transmissões
-     * @param string $where
-     * @param string $order
-     * @param string $limit
-     * @param string $fields
-     * @return PDOStatement
+     * Método responsável por excluir um dado no banco com a instância atual
      */
-    public static function getTransmissions($where = null, $order = null, $limit = null, $fields = '*')
+    public function delete(): bool
+    {
+        return (new Database('transmission'))->securityDelete('id = '.$this->id);
+    }
+
+    /**
+     * Método que retorna as transmissões cadastradas no banco
+     */
+    public static function getTransmissions(
+        string $where = null, 
+        string $order = null, 
+        string $limit = null, 
+        string $fields = '*'
+        ): PDOStatement
     {
         return (new Database('transmission'))->select($where, $order, $limit, $fields);
     }
 
     /**
-     * Método reponsável por retornar a transmissão pelo id
-     * @param integer $id
-     * @return Transmission
+     * Método reponsável por retornar uma transmissão pelo seu ID
      */
-    public static function getTransmissionById($id)
+    public static function getTransmissionById(string $id): Transmission|string
     {
         return self::getTransmissions('id = '. $id)->fetchObject(self::class);
     }
 
     /**
-     * Método responsável por buscar uma transmissão pelo nome
-     * @param string $name
-     * @return Transission
+     * Método responsável por retornar uma transmissão pelo nome
      */
-    public static function getTransmissionByName($name)
+    public static function getTransmissionByName(string $name): Transmission|string
     {
         return self::getTransmissions('name = "'.$name.'"')->fetchObject(self::class);
     }

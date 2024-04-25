@@ -2,50 +2,50 @@
 
 namespace App\Http;
 
+use App\Http\Router;
+use App\Model\Entity\User;
+
 class Request
 {
     /**
      * Instância do Router
-     * @var Router
      */
-    private $router;
+    private Router $router;
 
     /**
      * Método HTTP da requisição
-     * @var string
      */
-    private $httpMethod;
+    private string $httpMethod;
+
+    /** 
+     * Usuário logado no site
+    */
+    private User $user;
 
     /**
      * URL da página
-     * @var string
      */
-    private $uri;
+    private string $uri;
 
     /**
      * Parâmetros da URL ($_GET)
-     * @var array
      */
-    private $queryParams = [];
+    private array $queryParams = [];
 
     /**
      * Variáveis recebidas no POST da página ($_POST)
-     * @var array
      */
-    private $postVars = [];
+    private array $postVars = [];
 
     /**
      * Cabeçalho da requisição
-     * @var array
      */
-    private $headers = [];
+    private array $headers = [];
 
     /** 
      * Construtor da classe
-     * @param Router $router
-     * @return void
      */
-    public function __construct($router)
+    public function __construct(Router $router)
     {
         $this->router      = $router;
         $this->queryParams = $_GET ?? [];
@@ -57,78 +57,87 @@ class Request
 
     /**
      * Método reponsável por definir as variáveis do POST
-     * @return void
      */
     private function setPostVars()
     {
         if($this->httpMethod == 'GET') return false;
 
-        $inputRaw = file_get_contents('php://input');
+        $this->postVars = $_POST ?? []; // POST PADRÃO
+        
+        $inputRaw = file_get_contents('php://input'); // POST JSON
         $this->postVars = (strlen($inputRaw) && empty($_POST)) ? json_decode($inputRaw, true) : $this->postVars;
     }
 
     /**
-     * Método responsável por definir a URI
-     * @return void
+     * Método reponsável por definir o usuário
      */
-    private function setUri()
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * Método reponsável por definir o usuário
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * Método responsável por definir a URI
+     */
+    private function setUri(): void
     {
         $this->uri = $_SERVER['REQUEST_URI'] ?? '';
-        $xUri = explode('?', $this->uri);
-        
-        $this->uri = $xUri[0];
+        $xURI = explode('?', $this->uri);
+        $this->uri = $xURI[0];
     }
 
     /**
      * Método responsável por retornar a instância de Router
-     * @return Router
      */
-    public function getRouter()
+    public function getRouter(): Router
     {
         return $this->router;
     }
     
     /** 
      * Método responsável por retornar o método HTTP da requisição
-     * @return string
      */
-    public function getHttpMethod()
+    public function getHttpMethod(): string
     {
         return $this->httpMethod;
     }
 
     /** 
      * Método responsável por retornar a URI da requisição
-     * @return string
      */
-    public function getUri()
+    public function getUri(): string
     {
         return $this->uri;
     }
 
     /** 
      * Método responsável por retornar os headers da requisição
-     * @return string
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
     }
 
     /** 
      * Método responsável por retornar os parâmentros da URL da requisição
-     * @return string
      */
-    public function getQueryParams()
+    public function getQueryParams(): array
     {
         return $this->queryParams;
     }
 
     /** 
      * Método responsável por retornar as variáveis POST da requisição
-     * @return string
      */
-    public function getPostVars()
+    public function getPostVars(): array
     {
         return $this->postVars;
     }
