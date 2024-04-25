@@ -1,11 +1,12 @@
 # Api-carros
-Maravilhado com a ideia de consumir APIs busquei criar a minha própria, trazendo como tema __veículos__! Utilizei nela uma arquitetura padrão __MVC__ usando como base a linguagem __PHP.__
+Maravilhado com a ideia de consumir APIs busquei criar a minha própria, trazendo como tema __veículos__! Utilizei nela uma arquitetura __MVC__ usando como base a linguagem __PHP.__
 
 #php #poo #api
 
 ## Desenvolvendo
 Para construir uma __API-REST-FULL__ tive que estudar muitos conceitos que me trouxeram grandes experiências! Trabalhei com: 
 
+* Programação Orientada a Objeto
 * Arquitetura Rest.
 * Configuração de rotas.
 * Requisição do cliente.
@@ -18,10 +19,17 @@ Para construir uma __API-REST-FULL__ tive que estudar muitos conceitos que me tr
 * Postman (Ferramenta de teste).
 * Formatação de arquivos JSON.
 
+## Comandos iniciais
+Principais comandos para iniciar o projeto:
+```
+composer install
+php cli --db set # Carrega as tabelas
+php cli --db load # Carraga as informações para as tabelas
+```
+
 ## Documentação
 * __URL da API:__ indisponivel temporariamente
 * __Teste rotas no postman:__ https://www.postman.com/api-carros-gs/workspace/api-carros-developer-workspace
-* __Site (colaboração [@Gustavo Gualda](https://github.com/iCrowleySHR)):__ https://consumo-api-carros.vercel.app/
 
 ## Banco de dados
 O banco de dados dessa api conta com 6 tabelas, elas são: 
@@ -44,6 +52,9 @@ __Rotas do veículo (carro):__
 | GET /cars?page=2   | __READ__       | __No Auth__        | Obtenha até cinco postagens por páginação da `vehicle` tabela               |
 | GET /cars/{id}     | __READ__       | __No Auth__        | Obtenha um veículo atráves da consulta por id da `vehicle` tabela           |
 | POST /cars         | __CREATE__     | __Token Auth__     | Crie uma nova postagem da `vehicle` tabela                                  |
+| PUT /cars          | __UPDATE__     | __Token Auth__     | Atualize uma postagem da `vehicle` tabela                                   |
+| DELETE /cars       | __DELETE__     | __Token Auth__     | Delete uma postagem da `vehicle` tabela                                     |
+
 
 __Rotas dos usuários:__
 
@@ -60,10 +71,11 @@ __Rotas dos modelos do veículo:__
 | API                              | CRUD           | AUTH               | DESCRIÇÃO                                                                      |
 | :----------         		   | -------------- | ------------------ | :--------------------------------------------------------------------------    |
 | GET /carmodels          	   | __READ__       | __No Auth__        | Obtenha todas postagens da `model` tabela                     	          |
-| GET /carmodels/bycarmodels/{id}  | __READ__       | __No Auth__        | Obtenha uma postagem atráves da consulta por id da `model` tabela             |
-| GET /carmodels/bybrand/{id}      | __READ__       | __No Auth__        | Obtenha todas postagens atráves da consulta por id_marca na `model` tabela    |
-| POST /carmodels                  | __CREATE__     | __Token Auth__     | Crie uma nova postagem da `model` tabela                                      |
-| PUT /carmodels/{id}              | __UPDATE__     | __Token Auth__     | Atualize uma postagem da `model` tabela                                       | 
+| GET /carmodels/model/{id}        | __READ__       | __No Auth__        | Obtenha uma postagem atráves da consulta por id da `model` tabela              |
+| GET /carmodels/brand/{id}        | __READ__       | __No Auth__        | Obtenha todas postagens atráves da consulta por id_marca na `model` tabela     |
+| POST /carmodels                  | __CREATE__     | __Token Auth__     | Crie uma nova postagem da `model` tabela                                       |
+| PUT /carmodels/{id}              | __UPDATE__     | __Token Auth__     | Atualize uma postagem da `model` tabela                                        | 
+| DELETE /carmodels/{id}           | __DELETE__     | __Token Auth__     | Delete uma postagem da `model` tabela                                          | 
 
 __Para acessar todas as rotas da api:__ https://www.postman.com/api-carros-gs/workspace/api-carros-developer-workspace
 
@@ -73,41 +85,41 @@ Este é um retorno padrão da "Api-carros". Todos os veículos consultados dever
 
 ```
 {
-	"id": 1,
-	"valor": "66900.00",
-	"id_marca": 3,
-	"marca": "Chevrolet",
-	"id_modelo": 1,
-	"modelo": "Prisma",
-	"versao": "1.4 MPFI LT V8",
-	"imagens": [
-		"https://image.webmotors.com.br/_fotos/anunciousados/gigante/",
-		"https://image.webmotors.com.br/_fotos/anunciousados/gigante/",
-		"https://image.webmotors.com.br/_fotos/anunciousados/gigante/"
-	],
-	"ano": {
-		"producao": "2018",
-		"lancamento": "2019"
-	},
-	"combustivel": "Gasolina e Álcool",
-	"portas": 4,
-	"transmissao": "Manual",
-	"motor": "1.4",
-	"carroceria": "Sedã",
-	"conforto": {
-		"piloto_automatico": true,
-		"climatizador": false,
-		"vidro_automatico": false
-	},
-	"entretenimento": {
-		"am_fm": true,
-		"entrada_auxiliar": false,
-		"bluetooth": false,
-		"cd_player": false,
-		"dvd_player": false,
-		"leitor_mp3": false,
-		"entrada_usb": false
-	}
+    "id": 4,
+    "price": 77901,
+    "brand_id": 3,
+    "brand_name": "Chevrolet",
+    "model_id": 3,
+    "model_name": "Onix Plus",
+    "version": "1.4 Ltz 5p",
+    "images": [
+        "https://http2.mlstatic.com/D_NQ_NP_635613-MLB72695882250_112023-O.webp",
+        "https://http2.mlstatic.com/D_NQ_NP_775847-MLB72769680979_112023-O.webp",
+        null
+    ],
+    "year": {
+        "production": 2019,
+        "release": 2019
+    },
+    "fuel_name": "Gasolina e Álcool",
+    "doors": 4,
+    "transmission_name": "Manual",
+    "motor": 1,
+    "bodywork": "Hatch",
+    "comfort": {
+        "automatic_pilot": false,
+        "air_conditioner": true,
+        "automatic_glass": true
+    },
+    "entertainment": {
+        "am_fm": false,
+        "auxiliary_input": true,
+        "bluetooth": true,
+        "cd_player": true,
+        "dvd_player": true,
+        "mp3_reader": true,
+        "usb_port": false
+    }
 }
 ```
 
