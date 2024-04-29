@@ -33,7 +33,7 @@ class CarController extends Api
     /** 
      * Método responsável por setar o array de retorno do veículo
     */
-    private static function getCarFormat(EntityCar|string $obCar): array 
+    private static function formatterArray(EntityCar|string $obCar): array 
     {
         return [
             'id'                  => $obCar->id,
@@ -104,19 +104,37 @@ class CarController extends Api
         $obCar->usb_port        = $vars['usb_port']         ?? $obCar->usb_port;       
     }
 
+    /** 
+     * Método responsável por formartar os filtros da busca por veículos
+    */
+    private static function filter(array $vars): string
+    {
+        $filter = [];
+
+        isset($vars['fuel'])         ? $filter[] = "vehicle.fuel_id = ".$vars['fuel']                 : null;
+        isset($vars['brand'])        ? $filter[] = "model.brand_id = ".$vars['brand']                 : null;
+        isset($vars['carmodel'])     ? $filter[] = "vehicle.model_id = ".$vars['carmodel']            : null;
+        isset($vars['version'])      ? $filter[] = "vehicle.version LIKE %'".$vars['version']."'"     : null;
+        isset($vars['transmission']) ? $filter[] = "vehicle.transmission_id = ".$vars['transmission'] : null;
+        isset($vars['pricemax'])     ? $filter[] = "vehicle.price < ".$vars['pricemax']               : null;
+        isset($vars['pricemin'])     ? $filter[] = "vehicle.price > ".$vars['pricemin']               : null;
+        $filter[] = 'vehicle.deleted = false';
+
+        return implode(" AND ", $filter);
+    }
+
     /**
      * Método responsável por retornar os veículos existentes
      */
     public static function get(Request $request): array
     {   
         self::init();
-
         $vars = $request->getQueryParams();
-        $results = EntityCar::getCars('vehicle.deleted = false', 'vehicle.id DESC', self::getPaginationLimit($vars, 25));
+        $results = EntityCar::getCars(self::filter($vars), 'vehicle.id DESC', self::getPaginationLimit($vars, 25));
         
         $itens = [];
         while($obCar = $results->fetchObject(EntityCar::class)) {
-            $itens[] = self::getCarFormat($obCar);
+            $itens[] = self::formatterArray($obCar);
         }
         
         Examiner::checkArrayItens($itens);
@@ -134,7 +152,10 @@ class CarController extends Api
         $obCar = EntityCar::getCarById($id);
         Examiner::checkObjectExists($obCar, EntityCar::class);
         
-        return self::getCarFormat($obCar);
+        $arrayCar = self::formatterArray($obCar);
+        $arrayCar['deleted'] = $obCar->deleted;
+        
+        return $arrayCar;
     }
 
     /**

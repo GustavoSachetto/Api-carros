@@ -29,8 +29,8 @@ class AuthController extends Api
         $vars = $request->getPostVars();
 
         Examiner::checkRequiredFields([
-            'email'    => $vars['email'],
-            'password' => $vars['password']
+            'email'    => $vars['email'] ?? null,
+            'password' => $vars['password'] ?? null
         ]);
         
         $obUser = EntityUser::getUserByEmail($vars['email']);

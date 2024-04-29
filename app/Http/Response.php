@@ -41,6 +41,8 @@ class Response
     {
         $this->contentType = $contentType;
         $this->addHeader('Content-Type', $contentType);
+        $this->addHeader("Access-Control-Allow-Origin", '*');
+        $this->addHeader("Access-Control-Allow-Headers", '*');
     }
 
     /**
