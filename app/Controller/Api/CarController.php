@@ -22,12 +22,12 @@ class CarController extends Api
     /** 
      * Método reponsável por definir um limite de veículos por pagina 
     */
-    private static function getPaginationLimit(array $vars, int $limit): string
+    private static function getPaginationLimit(array $vars, int $limit): Pagination
     {
         $total = EntityCar::getCars(null, null, null, 'COUNT(*) as qtn')->fetchObject()->qtn;
         $currentPage = $vars['page'] ?? 1;
 
-        return (new Pagination($total, $currentPage, $limit))->getLimit();
+        return new Pagination($total, $currentPage, $limit);
     }
 
     /** 
@@ -111,13 +111,13 @@ class CarController extends Api
     {
         $filter = [];
 
-        isset($vars['fuel'])         ? $filter[] = "vehicle.fuel_id = ".$vars['fuel']                 : null;
-        isset($vars['brand'])        ? $filter[] = "model.brand_id = ".$vars['brand']                 : null;
-        isset($vars['carmodel'])     ? $filter[] = "vehicle.model_id = ".$vars['carmodel']            : null;
-        isset($vars['version'])      ? $filter[] = "vehicle.version LIKE %'".$vars['version']."'"     : null;
-        isset($vars['transmission']) ? $filter[] = "vehicle.transmission_id = ".$vars['transmission'] : null;
-        isset($vars['pricemax'])     ? $filter[] = "vehicle.price < ".$vars['pricemax']               : null;
-        isset($vars['pricemin'])     ? $filter[] = "vehicle.price > ".$vars['pricemin']               : null;
+        !empty($vars['fuel'])         ? $filter[] = "vehicle.fuel_id = ".$vars['fuel']                 : null;
+        !empty($vars['brand'])        ? $filter[] = "model.brand_id = ".$vars['brand']                 : null;
+        !empty($vars['carmodel'])     ? $filter[] = "vehicle.model_id = ".$vars['carmodel']            : null;
+        !empty($vars['version'])      ? $filter[] = "vehicle.version LIKE %'".$vars['version']."'"     : null;
+        !empty($vars['transmission']) ? $filter[] = "vehicle.transmission_id = ".$vars['transmission'] : null;
+        !empty($vars['pricemax'])     ? $filter[] = "vehicle.price < ".$vars['pricemax']               : null;
+        !empty($vars['pricemin'])     ? $filter[] = "vehicle.price > ".$vars['pricemin']               : null;
         $filter[] = 'vehicle.deleted = false';
 
         return implode(" AND ", $filter);
@@ -130,7 +130,19 @@ class CarController extends Api
     {   
         self::init();
         $vars = $request->getQueryParams();
-        $results = EntityCar::getCars(self::filter($vars), 'vehicle.id DESC', self::getPaginationLimit($vars, 25));
+        $obPagination = self::getPaginationLimit($vars, 25);
+
+        $filters = [
+            'fuel'         => $vars['fuel']         ?? null,
+            'brand'        => $vars['brand']        ?? null,
+            'carmodel'     => $vars['carmodel']     ?? null,
+            'version'      => $vars['version']      ?? null,
+            'transmission' => $vars['transmission'] ?? null,
+            'pricemax'     => $vars['pricemax']     ?? null,
+            'pricemin'     => $vars['pricemin']     ?? null
+        ];
+
+        $results = EntityCar::getCars(self::filter($filters), 'vehicle.id DESC', $obPagination->getLimit());
         
         $itens = [];
         while($obCar = $results->fetchObject(EntityCar::class)) {
@@ -138,7 +150,11 @@ class CarController extends Api
         }
         
         Examiner::checkArrayItens($itens);
-        return $itens;
+
+        return [
+            'vehicles' => $itens,
+            'pagination' => parent::getPagination($request, $obPagination)
+        ];
     }
 
     /**

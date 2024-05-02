@@ -22,9 +22,6 @@ $obRouter->get('/api/v1/cars/{id}', [
 
 // Rota de cadastro de veículo
 $obRouter->post('/api/v1/cars', [
-    'middlewares' => [
-        'jwt-auth'
-    ],
     function ($request) {
         return new Response(201, Api\CarController::set($request), 'application/json');
     }

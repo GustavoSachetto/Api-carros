@@ -31,7 +31,19 @@ class Response
     {
         $this->httpCode = $httpCode;
         $this->content  = $content;
+        $this->setAccessControl();
         $this->setContentType($contentType);
+    }
+
+    /**
+     * Método responsável por setar os access-control-allow ...
+     */
+    public function setAccessControl(): void
+    {
+        $this->addHeader("Access-Control-Allow-Origin", "*");
+        $this->addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+        $this->addHeader("Access-Control-Max-Age", "86400");
+        $this->addHeader("Access-Control-Allow-Headers", "Content-Type, X-custom-header, X-Auth-Token, Origin, Authorization");
     }
 
     /**
@@ -41,8 +53,6 @@ class Response
     {
         $this->contentType = $contentType;
         $this->addHeader('Content-Type', $contentType);
-        $this->addHeader("Access-Control-Allow-Origin", '*');
-        $this->addHeader("Access-Control-Allow-Headers", '*');
     }
 
     /**

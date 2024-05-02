@@ -12,9 +12,9 @@ return new class extends Interaction
         [
             'price'           => '66900.00',
             'version'         => '1.4 MPFI LT V8',
-            'primary_image'   => 'https: //image.webmotors.com.br/_fotos/anunciousados/gigante/2023/202312/20231215/chevrolet-prisma-1.4-mpfi-lt-8v-flex-4p-manual-wmimagem17445058936.jpg?s = fill&w = 1920&h = 1440&q = 75',
-            'secondary_image' => 'https: //image.webmotors.com.br/_fotos/anunciousados/gigante/2023/202312/20231215/chevrolet-prisma-1.4-mpfi-lt-8v-flex-4p-manual-wmimagem17445015235.jpg?s = fill&w = 1920&h = 1440&q = 75',
-            'tertiary_image'  => 'https: //image.webmotors.com.br/_fotos/anunciousados/gigante/2023/202312/20231215/chevrolet-prisma-1.4-mpfi-lt-8v-flex-4p-manual-wmimagem17450436217.jpg?s = fill&w = 1920&h = 1440&q = 75',
+            'primary_image'   => 'https://image.webmotors.com.br/_fotos/anunciousados/gigante/2023/202312/20231215/chevrolet-prisma-1.4-mpfi-lt-8v-flex-4p-manual-wmimagem17445058936.jpg?s = fill&w = 1920&h = 1440&q = 75',
+            'secondary_image' => 'https://image.webmotors.com.br/_fotos/anunciousados/gigante/2023/202312/20231215/chevrolet-prisma-1.4-mpfi-lt-8v-flex-4p-manual-wmimagem17445015235.jpg?s = fill&w = 1920&h = 1440&q = 75',
+            'tertiary_image'  => 'https://image.webmotors.com.br/_fotos/anunciousados/gigante/2023/202312/20231215/chevrolet-prisma-1.4-mpfi-lt-8v-flex-4p-manual-wmimagem17450436217.jpg?s = fill&w = 1920&h = 1440&q = 75',
             'production_year' => '2018',
             'release_year'    => '2019',
             'doors'           => '4',
