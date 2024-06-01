@@ -30,7 +30,7 @@ php cli --db load # Carraga as informações para as tabelas
 ## Documentação
 * __URL da API:__ indisponivel temporariamente
 * __Framework:__ https://github.com/GustavoSachetto/Php-puro/tree/v1
-* __Rotas:__ https://www.postman.com/api-carros-gs/workspace/api-carros-developer-workspace
+* __Documentação:__ https://www.postman.com/api-carros-gs/workspace/api-carros-developer-workspace
 
 ## Banco de dados
 O banco de dados dessa api conta com 6 tabelas, elas são: 
