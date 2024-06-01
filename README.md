@@ -29,7 +29,7 @@ php cli --db load # Carraga as informações para as tabelas
 
 ## Documentação
 * __URL da API:__ indisponivel temporariamente
-* __Framework:__ https://github.com/GustavoSachetto/Php-puro
+* __Framework:__ https://github.com/GustavoSachetto/Php-puro/tree/v1
 * __Rotas:__ https://www.postman.com/api-carros-gs/workspace/api-carros-developer-workspace
 
 ## Banco de dados
