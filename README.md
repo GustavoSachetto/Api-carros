@@ -50,7 +50,7 @@ __Rotas do veículo (carro):__
 | :----------        | -------------- | ------------------ | :-------------------------------------------------------------------------- |
 | GET /              | __READ__       | __No Auth__        | Obtenha os detalhes sobre o criador                                         |
 | GET /cars          | __READ__       | __No Auth__        | Obtenha as ultimas cinco postagens da `vehicle` tabela                      |
-| GET /cars?page=2   | __READ__       | __No Auth__        | Obtenha até cinco postagens por páginação da `vehicle` tabela               |
+| GET /cars?page=2   | __READ__       | __No Auth__        | Obtenha até 25 postagens por páginação da `vehicle` tabela                  |
 | GET /cars/{id}     | __READ__       | __No Auth__        | Obtenha um veículo atráves da consulta por id da `vehicle` tabela           |
 | POST /cars         | __CREATE__     | __Token Auth__     | Crie uma nova postagem da `vehicle` tabela                                  |
 | PUT /cars          | __UPDATE__     | __Token Auth__     | Atualize uma postagem da `vehicle` tabela                                   |
