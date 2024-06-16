@@ -35,10 +35,6 @@ $obRouter->get('/api/v1/users/{id}', [
 
 // Rota de cadastro de usuário
 $obRouter->post('/api/v1/users', [
-    'middlewares' => [
-        'basic-auth',
-        'auth-admin'
-    ],
     function ($request) {
         return new Response(201, Api\UserController::set($request), 'application/json');
     }

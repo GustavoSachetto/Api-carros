@@ -83,14 +83,16 @@ class UserController extends Api
         Examiner::checkRequiredFields([
             'name'          => $vars['name'] ?? null, 
             'email'         => $vars['email'] ?? null, 
-            'password_hash' => $vars['password_hash'] ?? null
+            'password'      => $vars['password'] ?? null
         ]);
 
         $obUser = EntityUser::getUserByEmail($vars['email']);
         Examiner::checkObjectNotExists($obUser, EntityUser::class);
 
         $obUser = new EntityUser;
-        self::setUserFields($obUser, $vars);
+        $obUser->name          = $vars['name'];
+        $obUser->email         = $vars['email'];
+        $obUser->password_hash = password_hash($vars['password'], PASSWORD_DEFAULT);
         $obUser->create();
 
         return [
