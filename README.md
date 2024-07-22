@@ -51,9 +51,9 @@ __Rotas do veículo (carro):__
 | GET /cars          | __READ__       | __No Auth__        | Obtenha as ultimas cinco postagens da `vehicle` tabela                      |
 | GET /cars?page=2   | __READ__       | __No Auth__        | Obtenha até 25 postagens por página da `vehicle` tabela                     |
 | GET /cars/{id}     | __READ__       | __No Auth__        | Obtenha uma postagem pela busca por id da `vehicle` tabela                  |
-| POST /cars         | __CREATE__     | __Token Auth__     | Crie uma nova postagem da `vehicle` tabela                                  |
-| PUT /cars          | __UPDATE__     | __Token Auth__     | Atualize uma postagem da `vehicle` tabela                                   |
-| DELETE /cars       | __DELETE__     | __Token Auth__     | Delete uma postagem da `vehicle` tabela                                     |
+| POST /cars         | __CREATE__     | __JWT Auth__       | Crie uma nova postagem da `vehicle` tabela                                  |
+| PUT /cars          | __UPDATE__     | __JWT Auth__       | Atualize uma postagem da `vehicle` tabela                                   |
+| DELETE /cars       | __DELETE__     | __JWT Auth__       | Delete uma postagem da `vehicle` tabela                                     |
 
 
 __Rotas dos usuários:__
@@ -66,16 +66,15 @@ __Rotas dos usuários:__
 | PUT /users/{id}        | __UPDATE__     | __Basic Auth__     | Atualize uma postagem da `user` tabela                                |
 | DELETE /users/{id}     | __DELETE__     | __Basic Auth__     | Delete uma postagem da `user` tabela                                  |
 
-__Rotas dos modelos do veículo:__
+__Rotas das marcas do veículo:__
 
-| API                              | CRUD           | AUTH               | DESCRIÇÃO                                                                      |
-| :------------------------------- | -------------- | ------------------ | :----------------------------------------------------------------------------- |
-| GET /carmodels          	       | __READ__       | __No Auth__        | Obtenha todas postagens da `model` tabela                     	              |
-| GET /carmodels/model/{id}        | __READ__       | __No Auth__        | Obtenha uma postagem pela busca por id da `model` tabela                       |
-| GET /carmodels/brand/{id}        | __READ__       | __No Auth__        | Obtenha todas postagens pela busca por id da marca na `model` tabela           |
-| POST /carmodels                  | __CREATE__     | __Token Auth__     | Crie uma nova postagem da `model` tabela                                       |
-| PUT /carmodels/{id}              | __UPDATE__     | __Token Auth__     | Atualize uma postagem da `model` tabela                                        | 
-| DELETE /carmodels/{id}           | __DELETE__     | __Token Auth__     | Delete uma postagem da `model` tabela                                          | 
+| API                           | CRUD           | AUTH               | DESCRIÇÃO                                                                      |
+| :---------------------------- | -------------- | ------------------ | :----------------------------------------------------------------------------- |
+| GET /brands          	        | __READ__       | __No Auth__        | Obtenha todas postagens da `brand` tabela                     	               |
+| GET /brands/{id}              | __READ__       | __No Auth__        | Obtenha todas postagens pela busca por id na `brand` tabela                    |
+| POST /brands                  | __CREATE__     | __JWT Auth__       | Crie uma nova postagem da `brand` tabela                                       |
+| PUT /brands/{id}              | __UPDATE__     | __JWT Auth__       | Atualize uma postagem da `brand` tabela                                        | 
+| DELETE /brands/{id}           | __DELETE__     | __JWT Auth__       | Delete uma postagem da `brand` tabela                                          | 
 
 __Para acessar todas as rotas da api:__ https://www.postman.com/api-carros-gs/workspace/api-carros-developer-workspace
 
@@ -86,7 +85,7 @@ Este é um retorno padrão da "Api-carros". Todos os veículos consultados dever
 ```
 {
     "id": 4,
-    "price": 77901,
+    "price": 77900,
     "brand_id": 3,
     "brand_name": "Chevrolet",
     "model_id": 3,
@@ -104,7 +103,7 @@ Este é um retorno padrão da "Api-carros". Todos os veículos consultados dever
     "fuel_name": "Gasolina e Álcool",
     "doors": 4,
     "transmission_name": "Manual",
-    "motor": 1,
+    "motor": 1.4,
     "bodywork": "Hatch",
     "comfort": {
         "automatic_pilot": false,
@@ -119,7 +118,8 @@ Este é um retorno padrão da "Api-carros". Todos os veículos consultados dever
         "dvd_player": true,
         "mp3_reader": true,
         "usb_port": false
-    }
+    },
+    "deleted": false
 }
 ```
 
