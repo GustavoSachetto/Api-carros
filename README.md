@@ -28,9 +28,8 @@ php cli --db load # Carraga as informações para as tabelas
 ```
 
 ## Documentação
-* __URL da API:__ indisponivel temporariamente
 * __Framework:__ https://github.com/GustavoSachetto/Php-puro/tree/v1
-* __Documentação:__ https://www.postman.com/api-carros-gs/workspace/api-carros-developer-workspace
+* __Postman:__ https://www.postman.com/api-carros-gs/workspace/api-carros-developer-workspace
 
 ## Banco de dados
 O banco de dados dessa api conta com 6 tabelas, elas são: 
@@ -48,10 +47,10 @@ __Rotas do veículo (carro):__
 
 | API                | CRUD           | AUTH               | DESCRIÇÃO                                                                   |
 | :----------        | -------------- | ------------------ | :-------------------------------------------------------------------------- |
-| GET /              | __READ__       | __No Auth__        | Obtenha os detalhes sobre o criador                                         |
+| GET /              | __READ__       | __No Auth__        | Obtenha as informações sobre a api                                          |
 | GET /cars          | __READ__       | __No Auth__        | Obtenha as ultimas cinco postagens da `vehicle` tabela                      |
-| GET /cars?page=2   | __READ__       | __No Auth__        | Obtenha até 25 postagens por páginação da `vehicle` tabela                  |
-| GET /cars/{id}     | __READ__       | __No Auth__        | Obtenha um veículo atráves da consulta por id da `vehicle` tabela           |
+| GET /cars?page=2   | __READ__       | __No Auth__        | Obtenha até 25 postagens por página da `vehicle` tabela                     |
+| GET /cars/{id}     | __READ__       | __No Auth__        | Obtenha uma postagem atráves da busca por id da `vehicle` tabela            |
 | POST /cars         | __CREATE__     | __Token Auth__     | Crie uma nova postagem da `vehicle` tabela                                  |
 | PUT /cars          | __UPDATE__     | __Token Auth__     | Atualize uma postagem da `vehicle` tabela                                   |
 | DELETE /cars       | __DELETE__     | __Token Auth__     | Delete uma postagem da `vehicle` tabela                                     |
