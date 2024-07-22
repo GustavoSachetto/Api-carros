@@ -46,7 +46,7 @@ Todas as tabelas e alterações no banco estão acima no projeto, na pasta "data
 __Rotas do veículo (carro):__
 
 | API                | CRUD           | AUTH               | DESCRIÇÃO                                                                   |
-| :----------        | -------------- | ------------------ | :-------------------------------------------------------------------------- |
+| :----------------- | -------------- | ------------------ | :-------------------------------------------------------------------------- |
 | GET /              | __READ__       | __No Auth__        | Obtenha as informações sobre a api                                          |
 | GET /cars          | __READ__       | __No Auth__        | Obtenha as ultimas cinco postagens da `vehicle` tabela                      |
 | GET /cars?page=2   | __READ__       | __No Auth__        | Obtenha até 25 postagens por página da `vehicle` tabela                     |
@@ -58,21 +58,21 @@ __Rotas do veículo (carro):__
 
 __Rotas dos usuários:__
 
-| API                    | CRUD           | AUTH               | DESCRIÇÃO                                                                   |
-| :----------            | -------------- | ------------------ | :-------------------------------------------------------------------------- |
-| GET /users          	 | __READ__       | __Basic Auth__     | Obtenha todas postagens da `user` tabela                     	     |
-| GET /users/{id}     	 | __READ__       | __Basic Auth__     | Obtenha uma postagem da `user` tabela          			     |
-| POST /users            | __CREATE__     | __Basic Auth__     | Crie uma nova postagem da `user` tabela                                  |
-| PUT /users/{id}        | __UPDATE__     | __Basic Auth__     | Atualize uma postagem da `user` tabela                                   |
-| DELETE /users/{id}     | __DELETE__     | __Basic Auth__     | Delete uma postagem da `user` tabela                                     |
+| API                    | CRUD           | AUTH               | DESCRIÇÃO                                                             |
+| :--------------------- | -------------- | ------------------ | :-------------------------------------------------------------------- |
+| GET /users          	 | __READ__       | __Basic Auth__     | Obtenha todas postagens da `user` tabela                     	       |
+| GET /users/{id}     	 | __READ__       | __Basic Auth__     | Obtenha uma postagem da `user` tabela          			           |
+| POST /users            | __CREATE__     | __Basic Auth__     | Crie uma nova postagem da `user` tabela                               |
+| PUT /users/{id}        | __UPDATE__     | __Basic Auth__     | Atualize uma postagem da `user` tabela                                |
+| DELETE /users/{id}     | __DELETE__     | __Basic Auth__     | Delete uma postagem da `user` tabela                                  |
 
 __Rotas dos modelos do veículo:__
 
 | API                              | CRUD           | AUTH               | DESCRIÇÃO                                                                      |
-| :----------         		   | -------------- | ------------------ | :--------------------------------------------------------------------------    |
-| GET /carmodels          	   | __READ__       | __No Auth__        | Obtenha todas postagens da `model` tabela                     	          |
-| GET /carmodels/model/{id}        | __READ__       | __No Auth__        | Obtenha uma postagem atráves da consulta por id da `model` tabela              |
-| GET /carmodels/brand/{id}        | __READ__       | __No Auth__        | Obtenha todas postagens atráves da consulta por id_marca na `model` tabela     |
+| :------------------------------- | -------------- | ------------------ | :----------------------------------------------------------------------------- |
+| GET /carmodels          	       | __READ__       | __No Auth__        | Obtenha todas postagens da `model` tabela                     	              |
+| GET /carmodels/model/{id}        | __READ__       | __No Auth__        | Obtenha uma postagem pela busca por id da `model` tabela                       |
+| GET /carmodels/brand/{id}        | __READ__       | __No Auth__        | Obtenha todas postagens pela busca por id da marca na `model` tabela           |
 | POST /carmodels                  | __CREATE__     | __Token Auth__     | Crie uma nova postagem da `model` tabela                                       |
 | PUT /carmodels/{id}              | __UPDATE__     | __Token Auth__     | Atualize uma postagem da `model` tabela                                        | 
 | DELETE /carmodels/{id}           | __DELETE__     | __Token Auth__     | Delete uma postagem da `model` tabela                                          | 
