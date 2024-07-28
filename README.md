@@ -3,6 +3,8 @@ Maravilhado com a ideia de consumir APIs busquei criar a minha própria, trazend
 
 #php #poo #api
 
+* __Link de acesso:__ https://www.postman.com/api-carros-gs/workspace/api-carros-developer-workspace
+
 ## Desenvolvendo
 Para construir uma __API-REST-FULL__ tive que estudar muitos conceitos que me trouxeram grandes experiências! Trabalhei com: 
 
@@ -29,7 +31,7 @@ php cli --db load # Carraga as informações para as tabelas
 
 ## Documentação
 * __Framework:__ https://github.com/GustavoSachetto/Php-puro/tree/v1
-* __Postman:__ https://www.postman.com/api-carros-gs/workspace/api-carros-developer-workspace
+* __Postman:__ https://documenter.getpostman.com/view/31981241/2sA3kaCK5V
 
 ## Banco de dados
 O banco de dados dessa api conta com 6 tabelas, elas são: 
