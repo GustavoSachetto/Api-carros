@@ -147,6 +147,24 @@ class Car
     }
 
     /**
+     * Método responsável por retornar um veículo pela: versão, ID do modelo, ID do combustível e ID da transmissão
+     */
+    public static function getCar(
+        string $version, 
+        int $modelId, 
+        int $fuelId, 
+        int $transmissionId
+        ): Car|string
+    {
+        return self::getCars(
+            "version = '". $version . "' AND 
+            model_id = ". $modelId . " AND 
+            fuel_id = ". $fuelId . " AND 
+            transmission_id = ". $transmissionId
+        )->fetchObject(self::class);
+    }
+
+    /**
      * Método reponsável por retornar um veículo pelo seu ID
      */
     public static function getCarById(string $id): Car|string

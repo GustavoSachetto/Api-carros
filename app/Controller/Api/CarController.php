@@ -114,7 +114,7 @@ class CarController extends Api
         !empty($vars['fuel'])         ? $filter[] = "vehicle.fuel_id = ".$vars['fuel']                 : null;
         !empty($vars['brand'])        ? $filter[] = "model.brand_id = ".$vars['brand']                 : null;
         !empty($vars['carmodel'])     ? $filter[] = "vehicle.model_id = ".$vars['carmodel']            : null;
-        !empty($vars['version'])      ? $filter[] = "vehicle.version LIKE %'".$vars['version']."'"     : null;
+        !empty($vars['version'])      ? $filter[] = "vehicle.version LIKE '%".$vars['version']."'"     : null;
         !empty($vars['transmission']) ? $filter[] = "vehicle.transmission_id = ".$vars['transmission'] : null;
         !empty($vars['pricemax'])     ? $filter[] = "vehicle.price < ".$vars['pricemax']               : null;
         !empty($vars['pricemin'])     ? $filter[] = "vehicle.price > ".$vars['pricemin']               : null;
@@ -196,6 +196,15 @@ class CarController extends Api
             'motor'           => $vars['motor']           ?? null,          
             'bodywork'        => $vars['bodywork']        ?? null       
         ]);
+
+        $obCar = EntityCar::getCar(
+            $vars['version'],
+            $vars['model_id'],
+            $vars['fuel_id'],
+            $vars['transmission_id']
+        );
+
+        Examiner::checkObjectNotExists($obCar, EntityCar::class);
 
         $obCar = new EntityCar;
         self::setCarFields($obCar, $vars);
