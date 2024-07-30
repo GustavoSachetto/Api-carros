@@ -240,6 +240,15 @@ class CarController extends Api
             'bodywork'        => $vars['bodywork']        ?? null       
         ]);
 
+        $obCar = EntityCar::getCar(
+            $vars['version'],
+            $vars['model_id'],
+            $vars['fuel_id'],
+            $vars['transmission_id']
+        );
+
+        Examiner::checkDuplicateObject($obCar, EntityCar::class, $id);
+
         $obCar = EntityCar::getCarById($id);
         Examiner::checkObjectExists($obCar, EntityCar::class);
 
