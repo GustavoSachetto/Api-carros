@@ -160,10 +160,10 @@ class Router
                    
                     return $methods[$httpMethod];
                 }
-                throw new Exception("Método não permitido", 405);
+                throw new Exception("Método não permitido.", 405);
             }
         }
-        throw new Exception("Url não encontrada", 404);
+        throw new Exception("Url não encontrada.", 404);
     }
 
     /**

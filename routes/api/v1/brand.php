@@ -60,6 +60,6 @@ $obRouter->delete('/api/v1/brands/{id}', [
         'jwt-auth'
     ],
     function ($request, $id) {
-        return new Response(201, Api\BrandController::delete($request, $id), 'application/json');
+        return new Response(200, Api\BrandController::delete($request, $id), 'application/json');
     }
 ]);

@@ -34,7 +34,7 @@ class Examiner
     public static function checkUserPassword(string $password_hash, EntityUser $obUser): void
     {
         if (!password_verify($password_hash, $obUser->password_hash)) {
-            throw new Exception("O usuário ou senha são inválidos.", 400);
+            throw new Exception("O usuário ou senha são inválidos.", 401);
         }
     }
 
@@ -85,7 +85,7 @@ class Examiner
 
         foreach ($fields as $key => $value) {
             if (!isset($value)) {
-                $message = count($fields) > 1 ? "Os campos {$filter} são obrigatórios." : "O campo {$key} é obrigatório";
+                $message = count($fields) > 1 ? "Os campos {$filter} são obrigatórios." : "O campo {$key} é obrigatório.";
                 throw new Exception($message, 400);
             } else if (empty($value)) {
                 $message = count($fields) > 1 ? "Os campos {$filter} não podem estar vazios." : "O campo {$key} não pode estar vazio.";

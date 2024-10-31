@@ -60,6 +60,6 @@ $obRouter->delete('/api/v1/transmissions/{id}', [
         'jwt-auth'
     ],
     function ($request, $id) {
-        return new Response(201, Api\TransmissionController::delete($request, $id), 'application/json');
+        return new Response(200, Api\TransmissionController::delete($request, $id), 'application/json');
     }
 ]);
