@@ -49,16 +49,25 @@ class CarmodelController extends Api
     /**
      * Método responsável por retornar os modelos de veículos existentes
      */
-    public static function get(Request $request, int|string $brand_id = null): array
+    public static function get(Request $request): array
     {   
         self::init();
 
-        if (isset($brand_id)) {
-            Examiner::checkId($brand_id);
-            $results = EntityCarmodel::getCarmodels('deleted = false and brand_id = '.$brand_id, 'id ASC');
-        } else {
-            $results = EntityCarmodel::getCarmodels('deleted = false', 'id ASC');    
-        }
+        $results = EntityCarmodel::getCarmodels('deleted = false', 'id ASC');    
+
+        return self::getArrayItens($results);
+    }
+
+     /**
+     * Método responsável por retornar os modelos de veículos existentes pelo id da marca
+     */
+    public static function fetchBranch(Request $request, int|string $brand_id): array
+    {
+        self::init();
+
+        Examiner::checkId($brand_id);
+
+        $results = EntityCarmodel::getCarmodels('deleted = false and brand_id = '.$brand_id, 'id ASC');
 
         return self::getArrayItens($results);
     }

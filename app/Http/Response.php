@@ -43,7 +43,7 @@ class Response
         $this->addHeader("Access-Control-Allow-Origin", "*");
         $this->addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
         $this->addHeader("Access-Control-Max-Age", "86400");
-        $this->addHeader("Access-Control-Allow-Headers", "Content-Type, X-custom-header, X-Auth-Token, Origin, Authorization, ngrok-skip-browser-warning");
+        $this->addHeader("Access-Control-Allow-Headers", "Content-Type, X-custom-header, X-Auth-Token, Origin, Authorization");
     }
 
     /**

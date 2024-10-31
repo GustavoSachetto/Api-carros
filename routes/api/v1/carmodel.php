@@ -16,7 +16,7 @@ $obRouter->get('/api/v1/carmodels', [
 // Rota de procura de modelo de veículo pelo id (marca)
 $obRouter->get('/api/v1/carmodels/brand/{id}', [
     function ($request, $id) {
-        return new Response(200, Api\CarmodelController::get($request, $id), 'application/json');
+        return new Response(200, Api\CarmodelController::fetchBranch($request, $id), 'application/json');
     }
 ]);
 
