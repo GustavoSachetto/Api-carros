@@ -61,7 +61,7 @@ class CarmodelController extends Api
      /**
      * Método responsável por retornar os modelos de veículos existentes pelo id da marca
      */
-    public static function fetchBranch(Request $request, int|string $brand_id): array
+    public static function fetchBrand(Request $request, int|string $brand_id): array
     {
         self::init();
 
