@@ -152,8 +152,8 @@ class Car
     public static function getCar(
         string $version, 
         int|string $modelId, 
-        int $fuelId, 
-        int $transmissionId
+        int|string $fuelId, 
+        int|string $transmissionId
         ): Car|string
     {
         return self::getCars(
