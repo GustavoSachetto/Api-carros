@@ -3,7 +3,7 @@ Maravilhado com a ideia de consumir APIs busquei criar a minha própria, trazend
 
 #php #poo #api
 
-* __Link de acesso:__ https://www.postman.com/api-carros-gs/workspace/api-carros-developer-workspace
+* __Link de acesso:__ https://www.postman.com/api-carros-gs/api-carros-developer-workspace/overview
 
 ## Desenvolvendo
 Para construir uma __API-REST-FULL__ tive que estudar muitos conceitos que me trouxeram grandes experiências! Trabalhei com: 
