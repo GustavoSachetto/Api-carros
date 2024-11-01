@@ -5,7 +5,7 @@ namespace App\Controller\Api;
 use App\Http\Request;
 use App\Controller\Api;
 use App\Utils\Examiner;
-use App\Exception\CarModel as ExceptionCarmodel;
+use App\Exception\Carmodel as ExceptionCarmodel;
 use App\Model\Entity\CarModel as EntityCarmodel;
 
 class CarmodelController extends Api

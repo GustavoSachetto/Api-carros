@@ -151,7 +151,7 @@ class Car
      */
     public static function getCar(
         string $version, 
-        int $modelId, 
+        int|string $modelId, 
         int $fuelId, 
         int $transmissionId
         ): Car|string
