@@ -46,6 +46,7 @@ class FuelController extends Api
         }
 
         Examiner::checkArrayItens($itens);
+        
         return $itens;
     }
 
@@ -64,7 +65,7 @@ class FuelController extends Api
             'id'            => $obFuel->id,
             'name'          => $obFuel->name,
             'deleted'       => $obFuel->deleted
-        ];;
+        ];
     }
 
     /**
