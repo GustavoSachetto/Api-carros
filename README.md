@@ -24,9 +24,9 @@ Para construir uma __API-REST-FULL__ tive que estudar muitos conceitos que me tr
 ## Comandos iniciais
 Principais comandos para iniciar o projeto:
 ```
-composer install
-php cli --db set # Carrega as tabelas
-php cli --db load # Carraga as informações para as tabelas
+composer install &&
+php cli --db set # Carrega as tabelas &&
+php cli --db load # Carraga as informações para as tabelas &&
 ```
 
 ## Documentação
